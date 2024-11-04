@@ -34,9 +34,9 @@ public class EmployeeService {
                 prefix = "USR";
                 break;
         }
-
-       //= employeeRepository.countByRoleId(role) + 1;  // Get count based on role and increment by 1
-        long count = 2;
+        System.out.println(employeeRepository.countByRoleId(prefix));
+        long count = employeeRepository.countByRoleId(prefix) + 1;  // Get count based on role and increment by 1
+        System.out.println(count);
         return String.format("%s%05d", prefix, count);  // Format to 5 digits, e.g., MGR00001
     }
     @Transactional
