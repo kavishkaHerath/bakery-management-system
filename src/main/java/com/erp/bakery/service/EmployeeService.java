@@ -18,26 +18,10 @@ public class EmployeeService {
 
     // Generate user ID based on role
     private String generateUserId(String role) {
-        String prefix;
-
-        switch (role.toLowerCase()) {
-            case "manager":
-                prefix = "MGR";
-                break;
-            case "staff":
-                prefix = "STF";
-                break;
-            case "admin":
-                prefix = "ADM";
-                break;
-            default:
-                prefix = "USR";
-                break;
-        }
-        System.out.println(employeeRepository.countByRoleId(prefix));
-        long count = employeeRepository.countByRoleId(prefix) + 1;  // Get count based on role and increment by 1
+        System.out.println(employeeRepository.countByRoleId(role));
+        long count = employeeRepository.countByRoleId(role) + 1;  // Get count based on role and increment by 1
         System.out.println(count);
-        return String.format("%s%05d", prefix, count);  // Format to 5 digits, e.g., MGR00001
+        return String.format("%s%05d", role, count);  // Format to 5 digits, e.g., MGR00001
     }
     @Transactional
     public Employee saveEmployee(Employee employee, UserLogin userLogin) {
