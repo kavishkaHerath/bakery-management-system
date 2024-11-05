@@ -1,12 +1,16 @@
 package com.erp.bakery.service;
 
 import com.erp.bakery.model.Employee;
+import com.erp.bakery.model.EmployeeDTO;
 import com.erp.bakery.model.UserLogin;
 import com.erp.bakery.repository.EmployeeRepository;
 import com.erp.bakery.repository.UserLoginRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -34,6 +38,12 @@ public class EmployeeService {
         Employee savedEmployee = employeeRepository.save(employee);
         userLoginRepository.save(userLogin);
         return savedEmployee;
+    }
+
+    public List<EmployeeDTO> findAllEmployees() {
+        return employeeRepository.findAll().stream()
+                .map(EmployeeDTO::new)  // Convert each Employee to EmployeeDTO
+                .collect(Collectors.toList());
     }
 
     public Employee updateEmployeeDetails(Employee updateRequest) {
