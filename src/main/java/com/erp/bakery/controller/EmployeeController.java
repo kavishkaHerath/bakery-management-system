@@ -3,8 +3,11 @@ package com.erp.bakery.controller;
 import com.erp.bakery.model.Employee;
 import com.erp.bakery.model.EmployeeRegistrationRequest;
 import com.erp.bakery.model.UserLogin;
+import com.erp.bakery.response.ResponseMessage;
 import com.erp.bakery.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,7 +25,18 @@ public class EmployeeController {
     }
 
     @PutMapping("/editEmployeeDetails")
-    public String updateEmployeeDetails(@RequestBody Employee updateRequest) {
-        return employeeService.updateEmployeeDetails(updateRequest);
+    public ResponseEntity<ResponseMessage> updateEmployeeDetails(@RequestBody Employee updateRequest) {
+        try {
+            Employee updatedEmployee = employeeService.updateEmployeeDetails(updateRequest);
+
+            // If update is successful, return 200 status and success message
+            ResponseMessage response = new ResponseMessage("success", "Employee updated successfully", updatedEmployee.getUserId());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } catch (Exception e) {
+            // Handle error, return appropriate error response
+            ResponseMessage response = new ResponseMessage("error", "Failed to update employee: " + e.getMessage(), null);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
 }

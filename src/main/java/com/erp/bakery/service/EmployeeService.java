@@ -36,7 +36,7 @@ public class EmployeeService {
         return savedEmployee;
     }
 
-    public String updateEmployeeDetails(Employee updateRequest) {
+    public Employee updateEmployeeDetails(Employee updateRequest) {
         var userId = updateRequest.getUserId();
         Employee existingEmployee = employeeRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Employee not found with userId: " + userId));
@@ -51,7 +51,7 @@ public class EmployeeService {
         if (updateRequest.getAddress() != null) {
             existingEmployee.setAddress(updateRequest.getAddress());
         }
-        employeeRepository.save(existingEmployee);
-        return existingEmployee.getUserId();
+
+        return employeeRepository.save(existingEmployee);
     }
 }
