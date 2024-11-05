@@ -36,9 +36,11 @@ public class Employee {
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private String hireDate;
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private String addDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, updatable = false)
+    private Date addDate = new Date(); // Defaults to current date
+
     @Column(length = 8, nullable = false)
     private String addBy;
     @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)

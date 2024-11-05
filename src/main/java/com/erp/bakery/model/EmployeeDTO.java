@@ -17,7 +17,7 @@ public class EmployeeDTO {
     private String hireDate;
     private String phone;
     private String address;
-    private String addDate;
+    private Date addDate;
     private String addBy;
 
     // Constructor
