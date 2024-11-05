@@ -35,4 +35,23 @@ public class EmployeeService {
         userLoginRepository.save(userLogin);
         return savedEmployee;
     }
+
+    public String updateEmployeeDetails(Employee updateRequest) {
+        var userId = updateRequest.getUserId();
+        Employee existingEmployee = employeeRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Employee not found with userId: " + userId));
+
+        // Update only specified fields
+        if (updateRequest.getEmail() != null) {
+            existingEmployee.setEmail(updateRequest.getEmail());
+        }
+        if (updateRequest.getPhone() != null) {
+            existingEmployee.setPhone(updateRequest.getPhone());
+        }
+        if (updateRequest.getAddress() != null) {
+            existingEmployee.setAddress(updateRequest.getAddress());
+        }
+        employeeRepository.save(existingEmployee);
+        return existingEmployee.getUserId();
+    }
 }
