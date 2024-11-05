@@ -3,7 +3,7 @@ package com.erp.bakery.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -37,9 +37,8 @@ public class Employee {
     @Column(nullable = false)
     private String hireDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = false)
-    private Date addDate = new Date(); // Defaults to current date
+    private LocalDate addDate;
 
     @Column(length = 8, nullable = false)
     private String addBy;

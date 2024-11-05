@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +34,7 @@ public class EmployeeService {
         // Generate custom user ID
         String userId = generateUserId(userLogin.getUserRole());
         employee.setUserId(userId);
-        employee.setAddDate(new Date());
+        employee.setAddDate(LocalDate.now());// Set to current date without time
         userLogin.setUserId(userId);
 
         // Save Employee and UserLogin records

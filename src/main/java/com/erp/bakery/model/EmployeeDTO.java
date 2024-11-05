@@ -1,9 +1,7 @@
 package com.erp.bakery.model;
-
-import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 @Data
 public class EmployeeDTO {
     private String userId;
@@ -17,7 +15,7 @@ public class EmployeeDTO {
     private String hireDate;
     private String phone;
     private String address;
-    private Date addDate;
+    private LocalDate addDate;
     private String addBy;
 
     // Constructor
