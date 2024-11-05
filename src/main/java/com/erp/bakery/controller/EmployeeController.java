@@ -5,10 +5,7 @@ import com.erp.bakery.model.EmployeeRegistrationRequest;
 import com.erp.bakery.model.UserLogin;
 import com.erp.bakery.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -22,5 +19,10 @@ public class EmployeeController {
         UserLogin userLogin = registrationRequest.getUserLogin();
 
         return employeeService.saveEmployee(employee, userLogin);
+    }
+
+    @PutMapping("/editEmployeeDetails")
+    public String updateEmployeeDetails(@RequestBody Employee updateRequest) {
+        return employeeService.updateEmployeeDetails(updateRequest);
     }
 }
