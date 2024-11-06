@@ -13,7 +13,7 @@ public class CategoryService {
 
     public Category addCategory(Category category) {
         // Check for duplicate name
-        if (categoryRepository.existsByName(category.getCategoryName())) {
+        if (categoryRepository.existsByCategoryName(category.getCategoryName())) {
             throw new DuplicateFieldException(category.getCategoryName() + " is already in use.");
         }
         return categoryRepository.save(category);

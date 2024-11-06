@@ -5,13 +5,13 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "supplier", uniqueConstraints = {@UniqueConstraint(columnNames = "categoryName")})
+@Table(name = "categoryTbl", uniqueConstraints = {@UniqueConstraint(columnNames = "categoryName")})
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryID;
+    private Long categoryId;
     @Column(nullable = false, unique = true)
     private String categoryName;
     @Column(nullable = false)
-    private boolean status;
+    private Boolean status;
 }
