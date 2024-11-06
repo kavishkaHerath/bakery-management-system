@@ -61,4 +61,32 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
         }
     }
+
+    @PutMapping("/editCategoryDetails")
+    public ResponseEntity<?> updateCategoryDetails(@RequestBody Category updatedCategory) {
+        try {
+            Category category = categoryService.updateCategory(updatedCategory);
+
+            ResponseMessage response = new ResponseMessage(
+                    "success",
+                    "Category updated successfully",
+                    String.valueOf(updatedCategory.getCategoryId())
+            );
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (DuplicateFieldException ex) {
+            ResponseMessage duplicateError = new ResponseMessage(
+                    "error-duplicate",
+                    ex.getMessage(),
+                    String.valueOf(updatedCategory.getCategoryId())
+            );
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(duplicateError);
+        } catch (Exception ex) {
+            ResponseMessage error = new ResponseMessage(
+                    "error",
+                    "Failed to update Category: " + ex.getMessage(),
+                    null
+            );
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

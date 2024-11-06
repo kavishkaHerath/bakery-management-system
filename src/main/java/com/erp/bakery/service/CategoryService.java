@@ -32,4 +32,24 @@ public class CategoryService {
                 () -> new NotFoundException("Category not found with Category Code: " + categoryCode)
         );
     }
+
+    public Category updateCategory(Category updatedCategory) {
+        var categoryId = updatedCategory.getCategoryId();
+        var categoryName = updatedCategory.getCategoryName();
+
+        Category existingCategory = categoryRepository.findById(categoryId).
+                orElseThrow(() -> new RuntimeException("Category not found"));
+
+
+        // Check if email is in use by another supplier
+        if (categoryName != null && !categoryName.equals(existingCategory.getCategoryName()) &&
+                categoryRepository.existsByCategoryName(categoryName)) {
+            throw new DuplicateFieldException("Category Name " + categoryName + " is already in use.");
+        }
+        // Update allowed fields
+        existingCategory.setCategoryName(updatedCategory.getCategoryName());
+        existingCategory.setStatus(updatedCategory.getStatus());
+
+        return categoryRepository.save(existingCategory);
+    }
 }
