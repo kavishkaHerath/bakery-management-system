@@ -1,7 +1,9 @@
 package com.erp.bakery.service;
 
 import com.erp.bakery.exception.DuplicateFieldException;
+import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Category;
+import com.erp.bakery.model.Supplier;
 import com.erp.bakery.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,13 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
-    public List<Category> getAllCategory() {
+    public List<Category> getAllCategories() {
         return categoryRepository.findAll();
+    }
+
+    public Category getCategoryByCode(Long categoryCode) {
+        return categoryRepository.findById(categoryCode).orElseThrow(
+                () -> new NotFoundException("Category not found with Category Code: " + categoryCode)
+        );
     }
 }

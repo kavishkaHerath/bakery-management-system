@@ -1,6 +1,7 @@
 package com.erp.bakery.controller;
 
 import com.erp.bakery.exception.DuplicateFieldException;
+import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Category;
 import com.erp.bakery.model.Supplier;
 import com.erp.bakery.response.ResponseMessage;
@@ -41,8 +42,23 @@ public class CategoryController {
     }
 
     @GetMapping("/get-all-category")
-    public ResponseEntity<List<Category>> getAllCategory() {
-        List<Category> categories = categoryService.getAllCategory();
+    public ResponseEntity<List<Category>> getAllCategories() {
+        List<Category> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(categories);
+    }
+
+    @GetMapping("getCategory/{categoryCode}")
+    public ResponseEntity<?> getSupplierByCode(@PathVariable Long categoryCode) {
+        try {
+            Category category = categoryService.getCategoryByCode(categoryCode);
+            return ResponseEntity.ok(category);
+        } catch (NotFoundException ex) {
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        }
     }
 }
