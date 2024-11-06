@@ -74,9 +74,22 @@ public class EmployeeService {
     // Update employee details
     public Employee updateEmployeeDetails(Employee updateRequest) {
         var userId = updateRequest.getUserId();
+        var email = updateRequest.getEmail();
+        var phone = updateRequest.getPhone();
         Employee existingEmployee = employeeRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Employee not found with Employee code: " + userId));
 
+
+        // Check if email is in use by another employee
+        if (email != null && !email.equals(existingEmployee.getEmail()) &&
+                employeeRepository.existsByEmail(email)) {
+            throw new DuplicateFieldException("Email " + email + " is already in use.");
+        }
+        // Check if phone number is in use by another employee
+        if (phone != null && !phone.equals(existingEmployee.getPhone()) &&
+                employeeRepository.existsByPhone(phone)) {
+            throw new DuplicateFieldException("Phone number " + phone + " is already in use.");
+        }
         // Update only specified fields
         if (updateRequest.getEmail() != null) {
             existingEmployee.setEmail(updateRequest.getEmail());
@@ -87,7 +100,6 @@ public class EmployeeService {
         if (updateRequest.getAddress() != null) {
             existingEmployee.setAddress(updateRequest.getAddress());
         }
-
         return employeeRepository.save(existingEmployee);
     }
 

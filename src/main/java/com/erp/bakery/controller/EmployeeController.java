@@ -79,9 +79,16 @@ public class EmployeeController {
             ResponseMessage response = new ResponseMessage("success", "Employee updated successfully", updatedEmployee.getUserId());
             return new ResponseEntity<>(response, HttpStatus.OK);
 
-        } catch (Exception e) {
+        } catch (DuplicateFieldException ex) {
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error-duplicate",
+                    ex.getMessage(),
+                    updateRequest.getUserId()
+            );
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(responseMessage);
+        } catch (Exception ex) {
             // Handle error, return appropriate error response
-            ResponseMessage response = new ResponseMessage("error", "Failed to update employee: " + e.getMessage(), null);
+            ResponseMessage response = new ResponseMessage("error", "Failed to update employee: " + ex.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
