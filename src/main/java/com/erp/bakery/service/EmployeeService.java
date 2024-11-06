@@ -1,18 +1,12 @@
 package com.erp.bakery.service;
 
-import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.model.Employee;
-import com.erp.bakery.model.EmployeeDTO;
 import com.erp.bakery.model.UserLogin;
 import com.erp.bakery.repository.EmployeeRepository;
 import com.erp.bakery.repository.UserLoginRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -31,48 +25,14 @@ public class EmployeeService {
     }
     @Transactional
     public Employee saveEmployee(Employee employee, UserLogin userLogin) {
-        // Check if email already exists in the database
-        if (employeeRepository.existsByEmail(employee.getEmail())) {
-            throw new DuplicateFieldException("Email " + employee.getEmail() + " is already in use.");
-        }
-        // Check if phone number already exists in the database
-        if (employeeRepository.existsByPhone(employee.getPhone())) {
-            throw new DuplicateFieldException("Phone number " + employee.getPhone() + " is already in use.");
-        }
         // Generate custom user ID
         String userId = generateUserId(userLogin.getUserRole());
         employee.setUserId(userId);
-        employee.setAddDate(LocalDate.now());// Set to current date without time
         userLogin.setUserId(userId);
 
         // Save Employee and UserLogin records
         Employee savedEmployee = employeeRepository.save(employee);
         userLoginRepository.save(userLogin);
         return savedEmployee;
-    }
-
-    public List<EmployeeDTO> findAllEmployees() {
-        return employeeRepository.findAll().stream()
-                .map(EmployeeDTO::new)  // Convert each Employee to EmployeeDTO
-                .collect(Collectors.toList());
-    }
-
-    public Employee updateEmployeeDetails(Employee updateRequest) {
-        var userId = updateRequest.getUserId();
-        Employee existingEmployee = employeeRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Employee not found with userId: " + userId));
-
-        // Update only specified fields
-        if (updateRequest.getEmail() != null) {
-            existingEmployee.setEmail(updateRequest.getEmail());
-        }
-        if (updateRequest.getPhone() != null) {
-            existingEmployee.setPhone(updateRequest.getPhone());
-        }
-        if (updateRequest.getAddress() != null) {
-            existingEmployee.setAddress(updateRequest.getAddress());
-        }
-
-        return employeeRepository.save(existingEmployee);
     }
 }
