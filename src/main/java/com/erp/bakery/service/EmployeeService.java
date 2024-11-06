@@ -49,7 +49,9 @@ public class EmployeeService {
         // Generate custom user ID
         String userId = generateUserId(userLogin.getUserRole());
         employee.setUserId(userId);
-        employee.setAddDate(LocalDate.now());// Set to current date without time
+        // Set to current date without time
+        employee.setAddDate(LocalDate.now());
+
         userLogin.setUserId(userId);
 
         // Save Employee and UserLogin records
@@ -74,12 +76,16 @@ public class EmployeeService {
     // Update employee details
     public Employee updateEmployeeDetails(Employee updateRequest) {
         var userId = updateRequest.getUserId();
+        var nic = updateRequest.getNic();
         var email = updateRequest.getEmail();
         var phone = updateRequest.getPhone();
         Employee existingEmployee = employeeRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Employee not found with Employee code: " + userId));
-
-
+        // Check if nic is in use by another employee
+        if (nic != null && !nic.equals(existingEmployee.getNic()) &&
+                employeeRepository.existsByNic(nic)) {
+            throw new DuplicateFieldException("NIC " + nic + " is already in use.");
+        }
         // Check if email is in use by another employee
         if (email != null && !email.equals(existingEmployee.getEmail()) &&
                 employeeRepository.existsByEmail(email)) {
@@ -91,15 +97,47 @@ public class EmployeeService {
             throw new DuplicateFieldException("Phone number " + phone + " is already in use.");
         }
         // Update only specified fields
-        if (updateRequest.getEmail() != null) {
-            existingEmployee.setEmail(updateRequest.getEmail());
+        if (updateRequest.getFirstName() != null) {
+            existingEmployee.setFirstName(updateRequest.getFirstName());
         }
-        if (updateRequest.getPhone() != null) {
-            existingEmployee.setPhone(updateRequest.getPhone());
+        if (updateRequest.getMiddleName() != null) {
+            existingEmployee.setMiddleName(updateRequest.getMiddleName());
+        }
+        if (updateRequest.getLastName() != null) {
+            existingEmployee.setLastName(updateRequest.getLastName());
+        }
+        if (updateRequest.getDob() != null) {
+            existingEmployee.setDob(updateRequest.getDob());
+        }
+        if (nic != null) {
+            existingEmployee.setNic(nic);
+        }
+        if (email != null) {
+            existingEmployee.setEmail(email);
+        }
+        if (phone != null) {
+            existingEmployee.setPhone(phone);
         }
         if (updateRequest.getAddress() != null) {
             existingEmployee.setAddress(updateRequest.getAddress());
         }
+        if (updateRequest.getRoleId() != null) {
+            existingEmployee.setRoleId(updateRequest.getRoleId());
+        }
+        if (updateRequest.getLevelId() != null) {
+            existingEmployee.setLevelId(updateRequest.getLevelId());
+        }
+        if (updateRequest.getHireDate() != null) {
+            existingEmployee.setHireDate(updateRequest.getHireDate());
+        }
+        if (updateRequest.getImageUrl() != null) {
+            existingEmployee.setImageUrl(updateRequest.getImageUrl());
+        }
+        if (updateRequest.getModifyBy() != null) {
+            existingEmployee.setModifyBy(updateRequest.getModifyBy());
+        }
+        // Set to current date without time
+        existingEmployee.setModifyDate(LocalDate.now());
         return employeeRepository.save(existingEmployee);
     }
 

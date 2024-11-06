@@ -8,6 +8,7 @@ public class EmployeeDTO {
     private String firstName;
     private String middleName;
     private String lastName;
+    private String dob;
     private String nic;
     private String email;
     private String roleId;
@@ -17,6 +18,7 @@ public class EmployeeDTO {
     private String address;
     private LocalDate addDate;
     private String addBy;
+    private String imageUrl;
 
     // Constructor
     public EmployeeDTO(Employee employee) {
@@ -24,6 +26,7 @@ public class EmployeeDTO {
         this.firstName = employee.getFirstName();
         this.middleName = employee.getMiddleName();
         this.lastName = employee.getLastName();
+        this.dob = employee.getDob();
         this.nic = employee.getNic();
         this.email = employee.getEmail();
         this.roleId = employee.getRoleId();
@@ -33,5 +36,6 @@ public class EmployeeDTO {
         this.address = employee.getAddress();
         this.addDate = employee.getAddDate();
         this.addBy = employee.getAddBy();
+        this.imageUrl = employee.getImageUrl();
     }
 }

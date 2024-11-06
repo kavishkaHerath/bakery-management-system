@@ -21,6 +21,9 @@ public class Employee {
     private String middleName;
     @Column(nullable = false)
     private String lastName;
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
+    private String dob;
     @Column(length = 20, nullable = false, unique = true)
     private String nic;
     @Column(nullable = false, unique = true)
@@ -39,9 +42,14 @@ public class Employee {
 
     @Column(nullable = false, updatable = false)
     private LocalDate addDate;
-
+    @Column(nullable = false)
+    private String imageUrl;
     @Column(length = 8, nullable = false)
     private String addBy;
+    @Column(length = 8)
+    private String modifyBy;
+    private LocalDate modifyDate;
+
     @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     private UserLogin userLogin;
 }

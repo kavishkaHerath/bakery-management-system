@@ -49,6 +49,7 @@ public class EmployeeController {
             Employee employee = registrationRequest.getEmployee();
             UserLogin userLogin = registrationRequest.getUserLogin();
             Employee createdEmployee = employeeService.saveEmployee(employee, userLogin);
+            System.out.println(createdEmployee);
             ResponseMessage response = new ResponseMessage("success", "Employee added successfully", employee.getUserId());
             return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
         } catch (DuplicateFieldException ex) {
