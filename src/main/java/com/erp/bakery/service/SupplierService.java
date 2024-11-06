@@ -12,6 +12,13 @@ public class SupplierService {
     private SupplierRepository supplierRepository;
 
     public Supplier addSupplier(Supplier supplier) {
+        // Check for duplicate email and phone
+        if (supplierRepository.existsByEmail(supplier.getEmail())) {
+            throw new DuplicateFieldException("Email " + supplier.getEmail() + " is already in use.");
+        }
+        if (supplierRepository.existsByPhone(supplier.getPhone())) {
+            throw new DuplicateFieldException("Phone number " + supplier.getPhone() + " is already in use.");
+        }
         return supplierRepository.save(supplier);
     }
 }
