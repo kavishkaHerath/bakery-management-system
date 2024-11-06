@@ -7,4 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query("SELECT COUNT(e) FROM Employee e WHERE e.roleId = ?1")
     long countByRoleId(String roleId);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByPhone(String phone);
 }
