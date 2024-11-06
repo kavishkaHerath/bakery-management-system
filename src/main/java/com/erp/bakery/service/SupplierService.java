@@ -6,6 +6,8 @@ import com.erp.bakery.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SupplierService {
     @Autowired
@@ -20,6 +22,10 @@ public class SupplierService {
             throw new DuplicateFieldException("Phone number " + supplier.getPhone() + " is already in use.");
         }
         return supplierRepository.save(supplier);
+    }
+
+    public List<Supplier> getAllSuppliers() {
+        return supplierRepository.findAll();
     }
 
     public Supplier updateSupplier(Supplier updatedSupplier) {

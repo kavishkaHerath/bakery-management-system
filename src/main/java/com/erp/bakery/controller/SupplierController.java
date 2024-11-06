@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/suppliers")
 public class SupplierController {
@@ -37,6 +39,12 @@ public class SupplierController {
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
+    }
+
+    @GetMapping("/get-all-supplier")
+    public ResponseEntity<List<Supplier>> getAllSuppliers() {
+        List<Supplier> suppliers = supplierService.getAllSuppliers();
+        return ResponseEntity.ok(suppliers);
     }
 
     @PutMapping("/editSupplierDetails")
