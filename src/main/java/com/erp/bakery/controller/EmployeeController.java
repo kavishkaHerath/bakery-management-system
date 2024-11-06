@@ -27,20 +27,30 @@ public class EmployeeController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerEmployee(@RequestBody EmployeeRegistrationRequest registrationRequest) {
-        Employee employee = registrationRequest.getEmployee();
-        UserLogin userLogin = registrationRequest.getUserLogin();
-        Employee createdEmployee = employeeService.saveEmployee(employee, userLogin);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
-    }
+        try {
+            // Attempt to add the employee
+            Employee employee = registrationRequest.getEmployee();
+            UserLogin userLogin = registrationRequest.getUserLogin();
+            Employee createdEmployee = employeeService.saveEmployee(employee, userLogin);
+            ResponseMessage response = new ResponseMessage("success", "Employee added successfully", employee.getUserId());
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
+        } catch (DuplicateFieldException ex) {
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMessage);
+        } catch (Exception ex) {
+            // Handle any other unexpected exceptions
+            ResponseMessage errorResponse = new ResponseMessage(
+                    "error",
+                    "An unexpected error occurred.",
+                    null
+            );
 
-    @ExceptionHandler(DuplicateFieldException.class)
-    public ResponseEntity<ResponseMessage> handleDuplicateFieldException(DuplicateFieldException ex) {
-        ResponseMessage responseMessage = new ResponseMessage(
-                "error",
-                ex.getMessage(),
-                null
-        );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMessage);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
 
     @PutMapping("/editEmployeeDetails")

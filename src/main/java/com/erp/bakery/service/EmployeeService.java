@@ -24,13 +24,15 @@ public class EmployeeService {
 
     // Generate user ID based on role
     private String generateUserId(String role) {
-        System.out.println(employeeRepository.countByRoleId(role));
         long count = employeeRepository.countByRoleId(role) + 1;  // Get count based on role and increment by 1
-        System.out.println(count);
         return String.format("%s%05d", role, count);  // Format to 5 digits, e.g., MGR00001
     }
     @Transactional
     public Employee saveEmployee(Employee employee, UserLogin userLogin) {
+        // Check if NIC already exists in the database
+        if (employeeRepository.existsByNic(employee.getNic())) {
+            throw new DuplicateFieldException("NIC " + employee.getNic() + " is already in use.");
+        }
         // Check if email already exists in the database
         if (employeeRepository.existsByEmail(employee.getEmail())) {
             throw new DuplicateFieldException("Email " + employee.getEmail() + " is already in use.");
@@ -38,6 +40,10 @@ public class EmployeeService {
         // Check if phone number already exists in the database
         if (employeeRepository.existsByPhone(employee.getPhone())) {
             throw new DuplicateFieldException("Phone number " + employee.getPhone() + " is already in use.");
+        }
+        // Check if phone number already exists in the database
+        if (userLoginRepository.existsByUsername(userLogin.getUsername())) {
+            throw new DuplicateFieldException("Username " + userLogin.getUsername() + " is already in use.");
         }
         // Generate custom user ID
         String userId = generateUserId(userLogin.getUserRole());
