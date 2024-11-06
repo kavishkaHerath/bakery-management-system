@@ -7,10 +7,7 @@ import com.erp.bakery.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/suppliers")
@@ -39,6 +36,34 @@ public class SupplierController {
             );
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+
+    @PutMapping("/editSupplierDetails")
+    public ResponseEntity<?> updateSupplierDetails(@RequestBody Supplier updatedSupplier) {
+        try {
+            Supplier supplier = supplierService.updateSupplier(updatedSupplier);
+
+            ResponseMessage response = new ResponseMessage(
+                    "success",
+                    "Supplier updated successfully",
+                    String.valueOf(updatedSupplier.getSupplierCode())
+            );
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (DuplicateFieldException ex) {
+            ResponseMessage duplicateError = new ResponseMessage(
+                    "error-duplicate",
+                    ex.getMessage(),
+                    String.valueOf(updatedSupplier.getSupplierCode())
+            );
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(duplicateError);
+        } catch (Exception ex) {
+            ResponseMessage error = new ResponseMessage(
+                    "error",
+                    "Failed to update employee: " + ex.getMessage(),
+                    null
+            );
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
     }
 }
