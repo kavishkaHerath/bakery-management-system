@@ -12,7 +12,7 @@ import lombok.Data;
 public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int supplierCode;
+    private long supplierCode;
     @Column(nullable = false)
     private String companeyName;
     @Column(nullable = false)
