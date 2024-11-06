@@ -42,7 +42,6 @@ public class EmployeeController {
         }
     }
 
-
     @PostMapping("/register")
     public ResponseEntity<?> registerEmployee(@RequestBody EmployeeRegistrationRequest registrationRequest) {
         try {
@@ -84,6 +83,23 @@ public class EmployeeController {
             // Handle error, return appropriate error response
             ResponseMessage response = new ResponseMessage("error", "Failed to update employee: " + e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Method to delete employee by ID
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable String userId) {
+        try {
+            employeeService.deleteEmployeeById(userId); // Call service to delete the employee
+            return ResponseEntity.status(HttpStatus.OK).body("Employee with Employee Code " + userId + " deleted successfully.");
+        } catch (NotFoundException ex) {
+            // Handle employee not found
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null  // No employee code for error response
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
         }
     }
 }

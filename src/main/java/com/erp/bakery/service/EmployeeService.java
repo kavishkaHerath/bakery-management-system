@@ -58,6 +58,7 @@ public class EmployeeService {
         return savedEmployee;
     }
 
+    //Find all employee details
     public List<EmployeeDTO> findAllEmployees() {
         return employeeRepository.findAll().stream()
                 .map(EmployeeDTO::new)  // Convert each Employee to EmployeeDTO
@@ -70,10 +71,11 @@ public class EmployeeService {
                 .orElseThrow(() -> new NotFoundException("Employee not found with Employee code: " + userId)));
     }
 
+    // Update employee details
     public Employee updateEmployeeDetails(Employee updateRequest) {
         var userId = updateRequest.getUserId();
         Employee existingEmployee = employeeRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Employee not found with userId: " + userId));
+                .orElseThrow(() -> new RuntimeException("Employee not found with Employee code: " + userId));
 
         // Update only specified fields
         if (updateRequest.getEmail() != null) {
@@ -87,5 +89,14 @@ public class EmployeeService {
         }
 
         return employeeRepository.save(existingEmployee);
+    }
+
+    // Method to delete an employee by ID
+    public void deleteEmployeeById(String userId) {
+        if (!employeeRepository.existsById(userId)) {
+            throw new NotFoundException("Employee not found with Employee code: " + userId);
+        }
+        employeeRepository.deleteById(userId); // Deletes the employee from the database
+        userLoginRepository.deleteById(userId);
     }
 }
