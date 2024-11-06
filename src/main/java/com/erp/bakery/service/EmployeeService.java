@@ -1,6 +1,6 @@
 package com.erp.bakery.service;
 
-import com.erp.bakery.exception.DuplicateEmailException;
+import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.model.Employee;
 import com.erp.bakery.model.EmployeeDTO;
 import com.erp.bakery.model.UserLogin;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +33,11 @@ public class EmployeeService {
     public Employee saveEmployee(Employee employee, UserLogin userLogin) {
         // Check if email already exists in the database
         if (employeeRepository.existsByEmail(employee.getEmail())) {
-            throw new DuplicateEmailException("Email " + employee.getEmail() + " is already in use.");
+            throw new DuplicateFieldException("Email " + employee.getEmail() + " is already in use.");
+        }
+        // Check if phone number already exists in the database
+        if (employeeRepository.existsByPhone(employee.getPhone())) {
+            throw new DuplicateFieldException("Phone number " + employee.getPhone() + " is already in use.");
         }
         // Generate custom user ID
         String userId = generateUserId(userLogin.getUserRole());

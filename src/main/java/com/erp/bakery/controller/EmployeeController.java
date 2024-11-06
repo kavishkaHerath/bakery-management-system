@@ -1,6 +1,6 @@
 package com.erp.bakery.controller;
 
-import com.erp.bakery.exception.DuplicateEmailException;
+import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.model.Employee;
 import com.erp.bakery.model.EmployeeDTO;
 import com.erp.bakery.model.EmployeeRegistrationRequest;
@@ -32,8 +32,8 @@ public class EmployeeController {
         Employee createdEmployee = employeeService.saveEmployee(employee, userLogin);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
     }
-    @ExceptionHandler(DuplicateEmailException.class)
-    public ResponseEntity<ResponseMessage> handleDuplicateEmailException(DuplicateEmailException ex) {
+    @ExceptionHandler(DuplicateFieldException.class)
+    public ResponseEntity<ResponseMessage> handleDuplicateFieldException(DuplicateFieldException ex) {
         ResponseMessage responseMessage = new ResponseMessage(
                 "error",
                 ex.getMessage(),

@@ -9,4 +9,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, String> {
     long countByRoleId(String roleId);
 
     boolean existsByEmail(String email);
+    boolean existsByPhone(String phone);
 }
