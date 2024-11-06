@@ -52,4 +52,11 @@ public class CategoryService {
 
         return categoryRepository.save(existingCategory);
     }
+
+    public void deleteCategoryDetails(Long categoryCode) {
+        if (!categoryRepository.existsById(categoryCode)) {
+            throw new NotFoundException("Category not found with Category code: " + categoryCode);
+        }
+        categoryRepository.deleteById(categoryCode);
+    }
 }

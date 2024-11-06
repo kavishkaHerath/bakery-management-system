@@ -89,4 +89,21 @@ public class CategoryController {
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
     }
+
+    // Method to delete employee by ID
+    @DeleteMapping("/delete/{categoryCode}")
+    public ResponseEntity<?> deleteCategoryDetails(@PathVariable Long categoryCode) {
+        try {
+            categoryService.deleteCategoryDetails(categoryCode); // Call service to delete the employee
+            return ResponseEntity.status(HttpStatus.OK).body("Category with Category Code " + categoryCode + " deleted successfully.");
+        } catch (NotFoundException ex) {
+            // Handle employee not found
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null  // No employee code for error response
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        }
+    }
 }
