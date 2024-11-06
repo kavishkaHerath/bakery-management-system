@@ -1,9 +1,11 @@
 package com.erp.bakery.controller;
 
 import com.erp.bakery.exception.DuplicateFieldException;
+import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Supplier;
 import com.erp.bakery.response.ResponseMessage;
 import com.erp.bakery.service.SupplierService;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +47,21 @@ public class SupplierController {
     public ResponseEntity<List<Supplier>> getAllSuppliers() {
         List<Supplier> suppliers = supplierService.getAllSuppliers();
         return ResponseEntity.ok(suppliers);
+    }
+
+    @GetMapping("getSupplier/{supplierCode}")
+    public ResponseEntity<?> getSupplierByCode(@PathVariable Long supplierCode) {
+        try {
+            Supplier supplier = supplierService.getSupplierByCode(supplierCode);
+            return ResponseEntity.ok(supplier);
+        } catch (NotFoundException ex) {
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        }
     }
 
     @PutMapping("/editSupplierDetails")
