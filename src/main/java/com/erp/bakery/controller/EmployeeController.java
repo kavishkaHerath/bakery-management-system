@@ -1,5 +1,6 @@
 package com.erp.bakery.controller;
 
+import com.erp.bakery.exception.DuplicateEmailException;
 import com.erp.bakery.model.Employee;
 import com.erp.bakery.model.EmployeeDTO;
 import com.erp.bakery.model.EmployeeRegistrationRequest;
@@ -25,11 +26,20 @@ public class EmployeeController {
     }
 
     @PostMapping("/register")
-    public Employee registerEmployee(@RequestBody EmployeeRegistrationRequest registrationRequest) {
+    public ResponseEntity<?>  registerEmployee(@RequestBody EmployeeRegistrationRequest registrationRequest) {
         Employee employee = registrationRequest.getEmployee();
         UserLogin userLogin = registrationRequest.getUserLogin();
-
-        return employeeService.saveEmployee(employee, userLogin);
+        Employee createdEmployee = employeeService.saveEmployee(employee, userLogin);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
+    }
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<ResponseMessage> handleDuplicateEmailException(DuplicateEmailException ex) {
+        ResponseMessage responseMessage = new ResponseMessage(
+                "error",
+                ex.getMessage(),
+                null
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMessage);
     }
 
     @PutMapping("/editEmployeeDetails")
