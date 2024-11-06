@@ -1,5 +1,6 @@
 package com.erp.bakery.service;
 
+import com.erp.bakery.exception.DuplicateEmailException;
 import com.erp.bakery.model.Employee;
 import com.erp.bakery.model.EmployeeDTO;
 import com.erp.bakery.model.UserLogin;
@@ -31,6 +32,10 @@ public class EmployeeService {
     }
     @Transactional
     public Employee saveEmployee(Employee employee, UserLogin userLogin) {
+        // Check if email already exists in the database
+        if (employeeRepository.existsByEmail(employee.getEmail())) {
+            throw new DuplicateEmailException("Email " + employee.getEmail() + " is already in use.");
+        }
         // Generate custom user ID
         String userId = generateUserId(userLogin.getUserRole());
         employee.setUserId(userId);
