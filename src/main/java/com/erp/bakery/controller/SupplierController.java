@@ -91,4 +91,21 @@ public class SupplierController {
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
     }
+
+    // Method to delete employee by ID
+    @DeleteMapping("/delete/{supplierCode}")
+    public ResponseEntity<?> deleteSupplierDetails(@PathVariable Long supplierCode) {
+        try {
+            supplierService.deleteSupplierDetails(supplierCode); // Call service to delete the employee
+            return ResponseEntity.status(HttpStatus.OK).body("Supplier with Supplier Code " + supplierCode + " deleted successfully.");
+        } catch (NotFoundException ex) {
+            // Handle employee not found
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null  // No employee code for error response
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        }
+    }
 }

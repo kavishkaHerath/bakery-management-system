@@ -64,4 +64,12 @@ public class SupplierService {
 
         return supplierRepository.save(existingSupplier);
     }
+
+    public void deleteSupplierDetails(Long supplierCode) {
+        if (!supplierRepository.existsById(supplierCode)) {
+            throw new NotFoundException("Supplier not found with Employee code: " + supplierCode);
+        }
+        supplierRepository.deleteById(supplierCode);
+    }
+
 }
