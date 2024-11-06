@@ -14,13 +14,16 @@ public class Supplier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int supplierCode;
     @Column(nullable = false)
-    private String supplierName;
-    @Column(nullable = false)
     private String companeyName;
+    @Column(nullable = false)
+    private String companeyRegisterNo;
+    @Column(nullable = false)
+    private String supplierName;
     @Column(nullable = false, unique = true)
     private String email;
     @Column(length = 10, nullable = false, unique = true)
     private String phone;
     @Column(nullable = false)
     private String address;
+    private String imageUrl;
 }
