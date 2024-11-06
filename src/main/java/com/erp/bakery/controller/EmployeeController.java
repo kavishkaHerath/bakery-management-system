@@ -1,6 +1,7 @@
 package com.erp.bakery.controller;
 
 import com.erp.bakery.exception.DuplicateFieldException;
+import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Employee;
 import com.erp.bakery.model.EmployeeDTO;
 import com.erp.bakery.model.EmployeeRegistrationRequest;
@@ -24,6 +25,23 @@ public class EmployeeController {
     public List<EmployeeDTO> getAllEmployees() {
         return employeeService.findAllEmployees();
     }
+
+    @GetMapping("/getEmployee/{userId}")
+    public ResponseEntity<?> getEmployeeById(@PathVariable String userId) {
+        try {
+            EmployeeDTO employeeDTO = employeeService.findEmployeeById(userId);
+            return ResponseEntity.ok(employeeDTO);
+        } catch (NotFoundException ex) {
+            // Handle employee not found
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        }
+    }
+
 
     @PostMapping("/register")
     public ResponseEntity<?> registerEmployee(@RequestBody EmployeeRegistrationRequest registrationRequest) {

@@ -1,6 +1,7 @@
 package com.erp.bakery.service;
 
 import com.erp.bakery.exception.DuplicateFieldException;
+import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Employee;
 import com.erp.bakery.model.EmployeeDTO;
 import com.erp.bakery.model.UserLogin;
@@ -61,6 +62,12 @@ public class EmployeeService {
         return employeeRepository.findAll().stream()
                 .map(EmployeeDTO::new)  // Convert each Employee to EmployeeDTO
                 .collect(Collectors.toList());
+    }
+
+    // Method to find an employee by ID
+    public EmployeeDTO findEmployeeById(String userId) {
+        return new EmployeeDTO(employeeRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Employee not found with Employee code: " + userId)));
     }
 
     public Employee updateEmployeeDetails(Employee updateRequest) {
