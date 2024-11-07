@@ -26,7 +26,7 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.CREATED).body(newCategory);
         } catch (DuplicateFieldException ex) {
             ResponseMessage errorDuplicate = new ResponseMessage(
-                    "error-dulplicate",
+                    "error-duplicate",
                     ex.getMessage(),
                     null
             );

@@ -16,8 +16,10 @@ public class Item {
     private String itemName;
     @Column(nullable = false)
     private String displayName;
+    @Column(nullable = false)
+    private String imageUrl;
     @ManyToOne
-    @JoinColumn(name = "categoryType", referencedColumnName = "categoryId", nullable = false)
+    @JoinColumn(name = "categoryId", referencedColumnName = "categoryId", nullable = false)
     private Category category;
     @ManyToOne
     @JoinColumn(name = "supplierCode", referencedColumnName = "supplierCode", nullable = false)
