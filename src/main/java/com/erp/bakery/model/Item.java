@@ -28,6 +28,10 @@ public class Item {
     private Supplier supplier;
     @Column(nullable = false, updatable = false)
     private LocalDate addDate;
-    @Column(nullable = false)
+    @Column(length = 8, nullable = false)
     private String addBy;
+    private LocalDate modifyDate;
+    @Column(length = 8)
+    private String modifyBy;
+
 }

@@ -1,6 +1,9 @@
 package com.erp.bakery.model;
 
+import jakarta.persistence.Column;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 public class ItemDTO {
@@ -14,6 +17,8 @@ public class ItemDTO {
     private String supplierName;
     private String addDate;
     private String addBy;
+    private String modifyDate;
+    private String modifyBy;
 
     public ItemDTO(Item item) {
         this.itemId = item.getItemId();
@@ -26,5 +31,7 @@ public class ItemDTO {
         this.supplierName = item.getSupplier().getSupplierName();
         this.addDate = item.getAddDate().toString();
         this.addBy = item.getAddBy();
+        this.modifyDate = item.getModifyBy() != null ? item.getModifyBy().toString() : item.getModifyBy();
+        this.modifyBy = item.getModifyBy();
     }
 }
