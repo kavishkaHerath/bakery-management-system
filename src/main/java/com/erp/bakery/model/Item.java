@@ -17,6 +17,8 @@ public class Item {
     @Column(nullable = false)
     private String displayName;
     @Column(nullable = false)
+    private Boolean status;
+    @Column(nullable = false)
     private String imageUrl;
     @ManyToOne
     @JoinColumn(name = "categoryId", referencedColumnName = "categoryId", nullable = false)

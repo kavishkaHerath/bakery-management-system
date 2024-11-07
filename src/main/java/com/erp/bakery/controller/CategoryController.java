@@ -3,7 +3,6 @@ package com.erp.bakery.controller;
 import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Category;
-import com.erp.bakery.model.Supplier;
 import com.erp.bakery.response.ResponseMessage;
 import com.erp.bakery.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
