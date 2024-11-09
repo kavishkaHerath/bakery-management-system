@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -17,13 +16,11 @@ public class ItemOrderService {
     @Autowired
     private ItemOrderRepository itemOrderRepository;
 
-    @Transactional
     public ItemsOrder saveItemOrder(ItemsOrder itemOrder) {
         // Generate itemOrderCode
         String itemOrderCode = generateItemOrderCode(itemOrder.getRequestBy());
         itemOrder.setItemOrderCode(itemOrderCode);
 
-        // Set to current date without time
         itemOrder.setRequestDate(LocalDate.now());
 
         // Save itemOrder and associated itemOrderDetails

@@ -1,12 +1,17 @@
 package com.erp.bakery.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
-@Data
+
 @Entity
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class ItemsOrder {
     @Id
     @Column(length = 21)
@@ -24,4 +29,9 @@ public class ItemsOrder {
     private double totalPrice;
     @Column(nullable = false)
     private LocalDate requestDate;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_item_order_code", referencedColumnName = "itemOrderCode")
+    @ToString.Exclude
+    private List<ItemOrderDetail> itemOrderDetails;
 }

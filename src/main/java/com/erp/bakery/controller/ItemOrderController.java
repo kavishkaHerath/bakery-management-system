@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 @RequestMapping("/api/itemOrders")
 public class ItemOrderController {
@@ -16,8 +17,8 @@ public class ItemOrderController {
     private ItemOrderService itemOrderService;
 
     @PostMapping("/add")
-    public ResponseEntity<String> saveItemOrder(@RequestBody ItemsOrder itemsOrder) {
+    public ResponseEntity<String> addItemOrder(@RequestBody ItemsOrder itemsOrder) {
         ItemsOrder savedOrder = itemOrderService.saveItemOrder(itemsOrder);
-        return ResponseEntity.ok("ItemOrder created successfully with code: " + savedOrder.getItemOrderCode());
+        return ResponseEntity.ok("Item Order created successfully with code: " + savedOrder.getItemOrderCode());
     }
 }
