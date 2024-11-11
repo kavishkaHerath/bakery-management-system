@@ -29,6 +29,8 @@ public class ItemsOrder {
     private double totalPrice;
     @Column(nullable = false)
     private LocalDate requestDate;
+    @Column(length = 1, nullable = false)
+    private String status;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_item_order_code", referencedColumnName = "itemOrderCode")
