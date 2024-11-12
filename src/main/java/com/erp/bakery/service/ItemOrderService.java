@@ -69,12 +69,11 @@ public class ItemOrderService {
     public ItemsOrder updateItemsDetails(ItemsOrder itemsOrder, String modifyingUser) {
         ItemsOrder existingOrder = itemOrderRepository.findById(itemsOrder.getItemOrderCode())
                 .orElseThrow(() -> new RuntimeException("Items Order not found"));
-
         // Check if the status allows modification
         if (!"P".equals(existingOrder.getStatus())) {
             throw new AccessToModifyException("Modification not allowed: status is not 'PENDING'!");
         }
-// Check if modifying user is allowed (assumes previous user validation logic)
+        // Check if modifying user is allowed (assumes previous user validation logic)
         if (!"admin".equals(modifyingUser) && !existingOrder.getRequestBy().equals(modifyingUser)) {
             throw new AccessToModifyException("You can't modify this.");
             //return ResponseEntity.status(HttpStatus.FORBIDDEN).body(");
@@ -82,11 +81,9 @@ public class ItemOrderService {
         var numberOfItems = 0;
         var totalPriceOfItem = 0.00;
         // Update main order fields
-
         existingOrder.getItemOrderDetails().clear();
         existingOrder.getItemOrderDetails().addAll(itemsOrder.getItemOrderDetails());
 
-        List<ItemOrderDetail> itemOrderDetails;
         // Modify or update order details
         for (ItemOrderDetail item : itemsOrder.getItemOrderDetails()) {
             numberOfItems++;
@@ -99,10 +96,8 @@ public class ItemOrderService {
         existingOrder.setNumberOfItems(numberOfItems);
         existingOrder.setTotalPrice(totalPriceOfItem);
 
-
-        itemOrderRepository.save(existingOrder);
         // Save the updated main order
-
+        itemOrderRepository.save(existingOrder);
         return existingOrder;
     }
 }
