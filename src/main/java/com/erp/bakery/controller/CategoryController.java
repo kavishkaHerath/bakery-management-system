@@ -3,6 +3,7 @@ package com.erp.bakery.controller;
 import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Category;
+import com.erp.bakery.model.CategoryDTO;
 import com.erp.bakery.response.ResponseMessage;
 import com.erp.bakery.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,8 +64,8 @@ public class CategoryController {
     }
 
     @GetMapping("getCategory/active")
-    public ResponseEntity<List<Map<String, Object>>> getActiveCategories() {
-        List<Map<String, Object>> activeCategories = categoryService.getActiveCategories();
+    public ResponseEntity<List<CategoryDTO>> getActiveCategories() {
+        List<CategoryDTO> activeCategories = categoryService.getActiveCategories();
         return ResponseEntity.ok(activeCategories);
     }
 

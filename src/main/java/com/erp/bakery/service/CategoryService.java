@@ -3,6 +3,7 @@ package com.erp.bakery.service;
 import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Category;
+import com.erp.bakery.model.CategoryDTO;
 import com.erp.bakery.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,20 +30,8 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public List<Map<String, Object>> getActiveCategories() {
-        List<Object[]> results = categoryRepository.findActiveCategories();
-        // Map results to a structured list of key-value pairs
-        return results
-                .stream()
-                .map(
-                        result -> {
-                            Map<String, Object> categoryMap = new HashMap<>();
-                            categoryMap.put("categoryId", result[0]);
-                            categoryMap.put("categoryName", result[1]);
-                            return categoryMap;
-                        }
-                )
-                .collect(Collectors.toList());
+    public List<CategoryDTO> getActiveCategories() {
+        return categoryRepository.findActiveCategories();
     }
 
     public Category getCategoryByCode(Long categoryCode) {
