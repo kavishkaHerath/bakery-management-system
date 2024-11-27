@@ -100,4 +100,39 @@ public class ItemOrderService {
         itemOrderRepository.save(existingOrder);
         return existingOrder;
     }
+
+//    public void deleteItemDetails(ItemsOrder itemsOrder, String modifyingUser) {
+//        ItemsOrder existingOrder = itemOrderRepository.findById(itemsOrder.getItemOrderCode())
+//                .orElseThrow(() -> new RuntimeException("Items Order not found"));
+//        // Check if the status allows modification
+//        if (!"P".equals(existingOrder.getStatus())) {
+//            throw new AccessToModifyException("Modification not allowed: status is not 'PENDING'!");
+//        }
+//        // Check if modifying user is allowed (assumes previous user validation logic)
+//        if (!"admin".equals(modifyingUser) && !existingOrder.getRequestBy().equals(modifyingUser)) {
+//            throw new AccessToModifyException("You can't modify this.");
+//            //return ResponseEntity.status(HttpStatus.FORBIDDEN).body(");
+//        }
+//        var numberOfItems = 0;
+//        var totalPriceOfItem = 0.00;
+//        // Update main order fields
+//        existingOrder.getItemOrderDetails().clear();
+//        existingOrder.getItemOrderDetails().addAll(itemsOrder.getItemOrderDetails());
+//
+//        // Modify or update order details
+//        for (ItemOrderDetail item : itemsOrder.getItemOrderDetails()) {
+//            numberOfItems++;
+//            var total = item.getUnitPrice() * item.getQuantity();
+//            totalPriceOfItem += total;
+//            item.setTotalPrice(total);
+//        }
+//        existingOrder.setItemOrderDetails(itemsOrder.getItemOrderDetails());
+//        existingOrder.setExpectedDate(itemsOrder.getExpectedDate());
+//        existingOrder.setNumberOfItems(numberOfItems);
+//        existingOrder.setTotalPrice(totalPriceOfItem);
+//
+//        // Save the updated main order
+//        itemOrderRepository.save(existingOrder);
+//        return existingOrder;
+//    }
 }

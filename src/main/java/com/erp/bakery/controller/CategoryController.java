@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/category")
@@ -59,6 +60,12 @@ public class CategoryController {
             );
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
         }
+    }
+
+    @GetMapping("getCategory/active")
+    public ResponseEntity<List<Map<String, Object>>> getActiveCategories() {
+        List<Map<String, Object>> activeCategories = categoryService.getActiveCategories();
+        return ResponseEntity.ok(activeCategories);
     }
 
     @PutMapping("/editCategoryDetails")
