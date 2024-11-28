@@ -12,7 +12,7 @@ import lombok.Data;
 public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long supplierCode;
+    private Long supplierCode;
     @Column(nullable = false)
     private String companeyName;
     @Column(nullable = false)
@@ -25,5 +25,7 @@ public class Supplier {
     private String phone;
     @Column(nullable = false)
     private String address;
+    @Column(nullable = false)
+    private Boolean status;
     private String imageUrl;
 }

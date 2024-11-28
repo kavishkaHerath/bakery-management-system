@@ -3,6 +3,7 @@ package com.erp.bakery.service;
 import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Supplier;
+import com.erp.bakery.model.SupplierDTO;
 import com.erp.bakery.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,10 @@ public class SupplierService {
         return supplierRepository.findById(supplierCode).orElseThrow(
                 () -> new NotFoundException("Supplier not found with Supplier Code: " + supplierCode)
         );
+    }
+
+    public List<SupplierDTO> getActiveSupplier() {
+        return supplierRepository.findActiveSupplier();
     }
 
     public Supplier updateSupplier(Supplier updatedSupplier) {

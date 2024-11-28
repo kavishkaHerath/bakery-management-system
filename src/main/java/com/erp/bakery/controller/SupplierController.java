@@ -2,7 +2,9 @@ package com.erp.bakery.controller;
 
 import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
+import com.erp.bakery.model.CategoryDTO;
 import com.erp.bakery.model.Supplier;
+import com.erp.bakery.model.SupplierDTO;
 import com.erp.bakery.response.ResponseMessage;
 import com.erp.bakery.service.SupplierService;
 import org.aspectj.weaver.ast.Not;
@@ -47,6 +49,12 @@ public class SupplierController {
     public ResponseEntity<List<Supplier>> getAllSuppliers() {
         List<Supplier> suppliers = supplierService.getAllSuppliers();
         return ResponseEntity.ok(suppliers);
+    }
+
+    @GetMapping("getSupplier/active")
+    public ResponseEntity<List<SupplierDTO>> getActiveCategories() {
+        List<SupplierDTO> activeSupplier = supplierService.getActiveSupplier();
+        return ResponseEntity.ok(activeSupplier);
     }
 
     @GetMapping("getSupplier/{supplierCode}")
