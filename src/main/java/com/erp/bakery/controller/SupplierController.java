@@ -1,5 +1,6 @@
 package com.erp.bakery.controller;
 
+import com.erp.bakery.exception.DeletionException;
 import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.CategoryDTO;
@@ -114,6 +115,13 @@ public class SupplierController {
                     null  // No employee code for error response
             );
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        } catch (DeletionException ex) {
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    supplierCode.toString()
+            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMessage);
         }
     }
 }

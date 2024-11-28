@@ -1,10 +1,12 @@
 package com.erp.bakery.service;
 
+import com.erp.bakery.exception.DeletionException;
 import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Category;
 import com.erp.bakery.model.CategoryDTO;
 import com.erp.bakery.repository.CategoryRepository;
+import com.erp.bakery.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private ItemRepository itemRepository;
 
     public Category addCategory(Category category) {
         // Check for duplicate name
@@ -63,6 +67,13 @@ public class CategoryService {
     public void deleteCategoryDetails(Long categoryCode) {
         if (!categoryRepository.existsById(categoryCode)) {
             throw new NotFoundException("Category not found with Category code: " + categoryCode);
+        }
+        // Check if the category is referenced in the Item table
+        boolean isReferenced = itemRepository.existsByCategory_CategoryId(categoryCode);
+        if (isReferenced) {
+            throw new DeletionException(
+                    "Category with Category Code :" + categoryCode + " is associated with items and cannot be deleted."
+            );
         }
         categoryRepository.deleteById(categoryCode);
     }

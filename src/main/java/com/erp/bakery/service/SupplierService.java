@@ -1,9 +1,11 @@
 package com.erp.bakery.service;
 
+import com.erp.bakery.exception.DeletionException;
 import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Supplier;
 import com.erp.bakery.model.SupplierDTO;
+import com.erp.bakery.repository.ItemRepository;
 import com.erp.bakery.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import java.util.List;
 public class SupplierService {
     @Autowired
     private SupplierRepository supplierRepository;
+    @Autowired
+    private ItemRepository itemRepository;
 
     public Supplier addSupplier(Supplier supplier) {
         // Check for duplicate email and phone
@@ -73,6 +77,13 @@ public class SupplierService {
     public void deleteSupplierDetails(Long supplierCode) {
         if (!supplierRepository.existsById(supplierCode)) {
             throw new NotFoundException("Supplier not found with Employee code: " + supplierCode);
+        }
+        // Check if the category is referenced in the Item table
+        boolean isReferenced = itemRepository.existsBySupplier_SupplierCode(supplierCode);
+        if (isReferenced) {
+            throw new DeletionException(
+                    "Supplier with Supplier Code :" + supplierCode + " is associated with items and cannot be deleted."
+            );
         }
         supplierRepository.deleteById(supplierCode);
     }

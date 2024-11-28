@@ -3,12 +3,12 @@ package com.erp.bakery.response;
 public class ResponseMessage {
     private String status;
     private String message;
-    private String employeeCode;
+    private String id;
 
-    public ResponseMessage(String status, String message, String employeeCode) {
+    public ResponseMessage(String status, String message, String code) {
         this.status = status;
         this.message = message;
-        this.employeeCode = employeeCode;
+        this.id = code;
     }
 
     public String getStatus() {
@@ -27,11 +27,11 @@ public class ResponseMessage {
         this.message = message;
     }
 
-    public String getEmployeeCode() {
-        return employeeCode;
+    public String getId() {
+        return id;
     }
 
-    public void setEmployeeCode(String employeeCode) {
-        this.employeeCode = employeeCode;
+    public void setId(String id) {
+        this.id = id;
     }
 }
