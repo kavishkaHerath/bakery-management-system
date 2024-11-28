@@ -1,11 +1,14 @@
 package com.erp.bakery.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "itemTbl", uniqueConstraints = {@UniqueConstraint(columnNames = "itemName")})
 public class Item {

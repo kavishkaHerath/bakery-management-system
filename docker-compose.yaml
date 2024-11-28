@@ -1,0 +1,9 @@
+services:
+  your_service_name:
+    build:
+      context: .
+      dockerfile: Dockerfile.server  # Replace with the actual name of your Dockerfile.server
+    image: aws-restaurant:latest123  # Replace with the desired image name and tag
+    ports:
+      - "8080:8080"
+    restart: always

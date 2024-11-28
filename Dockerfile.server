@@ -1,0 +1,10 @@
+FROM openjdk:17
+
+WORKDIR /loo
+
+COPY target/restaurant.war restaurant.war
+
+
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar", "restaurant.war"]
