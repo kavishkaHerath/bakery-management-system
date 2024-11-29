@@ -22,9 +22,9 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
 
-    public ItemDTO findItemById(Long itemId) {
+    public ItemDTO findItemById(Long itemId) {  
         return new ItemDTO(itemRepository.findById(itemId)
-                .orElseThrow(() -> new NotFoundException("Supplier not found with Supplier Code: " + itemId)));
+                .orElseThrow(() -> new NotFoundException("Items not found with Item Code: " + itemId)));
     }
 
     public Item addItem(Item item) {

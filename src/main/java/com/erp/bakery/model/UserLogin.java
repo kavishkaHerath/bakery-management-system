@@ -1,9 +1,12 @@
 package com.erp.bakery.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "user_login", uniqueConstraints = {
         @UniqueConstraint(columnNames = "username")

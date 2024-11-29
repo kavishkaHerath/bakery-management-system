@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/suppliers")
+@CrossOrigin("*")
 public class SupplierController {
     @Autowired
     private SupplierService supplierService;

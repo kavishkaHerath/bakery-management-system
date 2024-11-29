@@ -1,7 +1,5 @@
 package com.erp.bakery.repository;
 
-
-import com.erp.bakery.model.CategoryDTO;
 import com.erp.bakery.model.Supplier;
 import com.erp.bakery.model.SupplierDTO;
 import org.springframework.data.jpa.repository.JpaRepository;

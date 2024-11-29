@@ -9,11 +9,7 @@ import com.erp.bakery.repository.CategoryRepository;
 import com.erp.bakery.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
@@ -21,6 +17,7 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ItemRepository itemRepository;
+
 
     public Category addCategory(Category category) {
         // Check for duplicate name

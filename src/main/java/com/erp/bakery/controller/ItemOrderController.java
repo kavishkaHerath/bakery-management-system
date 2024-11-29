@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/itemOrders")
+@CrossOrigin("*")
 public class ItemOrderController {
     @Autowired
     private ItemOrderService itemOrderService;

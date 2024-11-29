@@ -36,5 +36,4 @@ public class Item {
     private LocalDate modifyDate;
     @Column(length = 8)
     private String modifyBy;
-
 }
