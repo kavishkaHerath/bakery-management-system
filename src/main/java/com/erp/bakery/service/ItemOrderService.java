@@ -1,8 +1,8 @@
 package com.erp.bakery.service;
 
 import com.erp.bakery.exception.AccessToModifyException;
-import com.erp.bakery.model.ItemOrderDetail;
-import com.erp.bakery.model.ItemsOrder;
+import com.erp.bakery.model.OrderDetail;
+import com.erp.bakery.model.Order;
 import com.erp.bakery.repository.ItemOrderDetailRepository;
 import com.erp.bakery.repository.ItemOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ public class ItemOrderService {
     private ItemOrderRepository itemOrderRepository;
     private ItemOrderDetailRepository itemOrderDetailRepository;
 
-    public ItemsOrder saveItemOrder(ItemsOrder itemOrder) {
+    public Order saveItemOrder(Order itemOrder) {
         // Generate itemOrderCode
         String itemOrderCode = generateItemOrderCode(itemOrder.getRequestBy());
-        itemOrder.setItemOrderCode(itemOrderCode);
+        itemOrder.setOrderCode(itemOrderCode);
 
         itemOrder.setRequestDate(LocalDate.now());
         itemOrder.setStatus("P"); // If the status is 'P', the person who made this order can modify the requirements.
@@ -30,7 +30,7 @@ public class ItemOrderService {
         var numberOfItems = 0;
         var totalPriceOfItem = 0.00;
 
-        for (ItemOrderDetail item : itemOrder.getItemOrderDetails()) {
+        for (OrderDetail item : itemOrder.getOrderDetails()) {
             numberOfItems++;
             System.out.println(item.getId());
             var total = item.getUnitPrice() * item.getQuantity();
@@ -60,8 +60,8 @@ public class ItemOrderService {
         return datePart + requestBy + timePart;
     }
 
-    public ItemsOrder updateItemsDetails(ItemsOrder itemsOrder, String modifyingUser) {
-        ItemsOrder existingOrder = itemOrderRepository.findById(itemsOrder.getItemOrderCode())
+    public Order updateItemsDetails(Order order, String modifyingUser) {
+        Order existingOrder = itemOrderRepository.findById(order.getOrderCode())
                 .orElseThrow(() -> new RuntimeException("Items Order not found"));
         // Check if the status allows modification
         if (!"P".equals(existingOrder.getStatus())) {
@@ -75,18 +75,18 @@ public class ItemOrderService {
         var numberOfItems = 0;
         var totalPriceOfItem = 0.00;
         // Update main order fields
-        existingOrder.getItemOrderDetails().clear();
-        existingOrder.getItemOrderDetails().addAll(itemsOrder.getItemOrderDetails());
+        existingOrder.getOrderDetails().clear();
+        existingOrder.getOrderDetails().addAll(order.getOrderDetails());
 
         // Modify or update order details
-        for (ItemOrderDetail item : itemsOrder.getItemOrderDetails()) {
+        for (OrderDetail item : order.getOrderDetails()) {
             numberOfItems++;
             var total = item.getUnitPrice() * item.getQuantity();
             totalPriceOfItem += total;
             item.setTotalPrice(total);
         }
-        existingOrder.setItemOrderDetails(itemsOrder.getItemOrderDetails());
-        existingOrder.setExpectedDate(itemsOrder.getExpectedDate());
+        existingOrder.setOrderDetails(order.getOrderDetails());
+        existingOrder.setExpectedDate(order.getExpectedDate());
         existingOrder.setNumberOfItems(numberOfItems);
         existingOrder.setTotalPrice(totalPriceOfItem);
 

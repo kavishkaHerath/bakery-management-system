@@ -1,9 +1,7 @@
 package com.erp.bakery.controller;
 
 import com.erp.bakery.exception.AccessToModifyException;
-import com.erp.bakery.exception.DuplicateFieldException;
-import com.erp.bakery.model.Item;
-import com.erp.bakery.model.ItemsOrder;
+import com.erp.bakery.model.Order;
 import com.erp.bakery.response.ResponseMessage;
 import com.erp.bakery.service.ItemOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,26 +18,26 @@ public class ItemOrderController {
     private ItemOrderService itemOrderService;
 
     @PostMapping("/add")
-    public ResponseEntity<String> addItemOrder(@RequestBody ItemsOrder itemsOrder) {
-        ItemsOrder savedOrder = itemOrderService.saveItemOrder(itemsOrder);
-        return ResponseEntity.ok("Item Order created successfully with code: " + savedOrder.getItemOrderCode());
+    public ResponseEntity<String> addItemOrder(@RequestBody Order order) {
+        Order savedOrder = itemOrderService.saveItemOrder(order);
+        return ResponseEntity.ok("Item Order created successfully with code: " + savedOrder.getOrderCode());
     }
 
     @PutMapping("/edit/{modifyingUser}")
-    public ResponseEntity<?> editItemOrder(@RequestBody ItemsOrder itemsOrder, @PathVariable String modifyingUser) {
+    public ResponseEntity<?> editItemOrder(@RequestBody Order order, @PathVariable String modifyingUser) {
         try {
-            ItemsOrder newItem = itemOrderService.updateItemsDetails(itemsOrder, modifyingUser);
+            Order newItem = itemOrderService.updateItemsDetails(order, modifyingUser);
             ResponseMessage response = new ResponseMessage(
                     "success",
                     "Supplier updated successfully",
-                    itemsOrder.getItemOrderCode()
+                    order.getOrderCode()
             );
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (AccessToModifyException ex) {
             ResponseMessage error_duplicate = new ResponseMessage(
                     "error-duplicate",
                     ex.getMessage(),
-                    itemsOrder.getItemOrderCode()
+                    order.getOrderCode()
             );
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error_duplicate);
         } catch (Exception ex) {

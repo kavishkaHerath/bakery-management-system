@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class ItemOrderDetail {
+public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // PK

@@ -12,10 +12,10 @@ import java.util.List;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class ItemsOrder {
+public class Order {
     @Id
     @Column(length = 21)
-    private String itemOrderCode;
+    private String orderCode;
     @ManyToOne
     @JoinColumn(name = "supplierCode", referencedColumnName = "supplierCode", nullable = false)
     private Supplier supplier;
@@ -33,7 +33,7 @@ public class ItemsOrder {
     private String status;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_item_order_code", referencedColumnName = "itemOrderCode")
+    @JoinColumn(name = "fk_order_code", referencedColumnName = "orderCode")
     @ToString.Exclude
-    private List<ItemOrderDetail> itemOrderDetails;
+    private List<OrderDetail> orderDetails;
 }
