@@ -19,7 +19,11 @@ import java.util.List;
 @CrossOrigin("*")
 public class CategoryController {
     @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
+
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @PostMapping("/add-category")
     public ResponseEntity<?> addCategory(@RequestBody Category category) {

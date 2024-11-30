@@ -17,7 +17,11 @@ import java.util.List;
 @CrossOrigin("*")
 public class ItemController {
     @Autowired
-    private ItemService itemService;
+    private final ItemService itemService;
+
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
+    }
 
     @PostMapping("/addItem")
     public ResponseEntity<?> addItem(@RequestBody Item item) {

@@ -15,9 +15,14 @@ import java.util.List;
 @Service
 public class SupplierService {
     @Autowired
-    private SupplierRepository supplierRepository;
+    private final SupplierRepository supplierRepository;
     @Autowired
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
+
+    public SupplierService(SupplierRepository supplierRepository, ItemRepository itemRepository) {
+        this.supplierRepository = supplierRepository;
+        this.itemRepository = itemRepository;
+    }
 
     public Supplier addSupplier(Supplier supplier) {
         // Check for duplicate email and phone

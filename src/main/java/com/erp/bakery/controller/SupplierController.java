@@ -3,12 +3,10 @@ package com.erp.bakery.controller;
 import com.erp.bakery.exception.DeletionException;
 import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
-import com.erp.bakery.model.CategoryDTO;
 import com.erp.bakery.model.Supplier;
 import com.erp.bakery.model.SupplierDTO;
 import com.erp.bakery.response.ResponseMessage;
 import com.erp.bakery.service.SupplierService;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +19,11 @@ import java.util.List;
 @CrossOrigin("*")
 public class SupplierController {
     @Autowired
-    private SupplierService supplierService;
+    private final SupplierService supplierService;
+
+    public SupplierController(SupplierService supplierService) {
+        this.supplierService = supplierService;
+    }
 
     @PostMapping("/supplier-register")
     public ResponseEntity<?> addSupplier(@RequestBody Supplier supplier) {
@@ -42,7 +44,6 @@ public class SupplierController {
                     "An unexpected error occurred.",
                     null
             );
-
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }

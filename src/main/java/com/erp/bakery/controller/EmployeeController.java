@@ -20,7 +20,11 @@ import java.util.List;
 @CrossOrigin("*")
 public class EmployeeController {
     @Autowired
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @GetMapping("/all-employee-details")
     public List<EmployeeDTO> getAllEmployees() {

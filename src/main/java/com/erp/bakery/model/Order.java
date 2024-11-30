@@ -6,12 +6,9 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 
-
+@Data
 @Entity
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Table(name = "order_tbl")
 public class Order {
     @Id
     @Column(length = 21)

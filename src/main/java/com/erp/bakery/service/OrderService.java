@@ -3,8 +3,7 @@ package com.erp.bakery.service;
 import com.erp.bakery.exception.AccessToModifyException;
 import com.erp.bakery.model.OrderDetail;
 import com.erp.bakery.model.Order;
-import com.erp.bakery.repository.ItemOrderDetailRepository;
-import com.erp.bakery.repository.ItemOrderRepository;
+import com.erp.bakery.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,35 +13,38 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 @Service
-public class ItemOrderService {
+public class OrderService {
     @Autowired
-    private ItemOrderRepository itemOrderRepository;
-    private ItemOrderDetailRepository itemOrderDetailRepository;
+    private final OrderRepository orderRepository;
 
-    public Order saveItemOrder(Order itemOrder) {
-        // Generate itemOrderCode
-        String itemOrderCode = generateItemOrderCode(itemOrder.getRequestBy());
-        itemOrder.setOrderCode(itemOrderCode);
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
 
-        itemOrder.setRequestDate(LocalDate.now());
-        itemOrder.setStatus("P"); // If the status is 'P', the person who made this order can modify the requirements.
+    public Order saveItemOrder(Order order) {
+        // Generate orderCode
+        String orderCode = generateItemOrderCode(order.getRequestBy());
+        order.setOrderCode(orderCode);
+
+        order.setRequestDate(LocalDate.now());
+        order.setStatus("P"); // If the status is 'P', the person who made this order can modify the requirements.
 
         var numberOfItems = 0;
         var totalPriceOfItem = 0.00;
 
-        for (OrderDetail item : itemOrder.getOrderDetails()) {
+        for (OrderDetail item : order.getOrderDetails()) {
             numberOfItems++;
             System.out.println(item.getId());
             var total = item.getUnitPrice() * item.getQuantity();
             totalPriceOfItem += total;
             item.setTotalPrice(total);
         }
-        itemOrder.setNumberOfItems(numberOfItems);
-        itemOrder.setTotalPrice(totalPriceOfItem);
-        // Save itemOrder and associated itemOrderDetails
-        itemOrderRepository.save(itemOrder);
+        order.setNumberOfItems(numberOfItems);
+        order.setTotalPrice(totalPriceOfItem);
+        // Save order and associated orderDetails
+        orderRepository.save(order);
 
-        return itemOrder;
+        return order;
     }
 
     private String generateItemOrderCode(String requestBy) {
@@ -61,7 +63,7 @@ public class ItemOrderService {
     }
 
     public Order updateItemsDetails(Order order, String modifyingUser) {
-        Order existingOrder = itemOrderRepository.findById(order.getOrderCode())
+        Order existingOrder = orderRepository.findById(order.getOrderCode())
                 .orElseThrow(() -> new RuntimeException("Items Order not found"));
         // Check if the status allows modification
         if (!"P".equals(existingOrder.getStatus())) {
@@ -91,7 +93,7 @@ public class ItemOrderService {
         existingOrder.setTotalPrice(totalPriceOfItem);
 
         // Save the updated main order
-        itemOrderRepository.save(existingOrder);
+        orderRepository.save(existingOrder);
         return existingOrder;
     }
 

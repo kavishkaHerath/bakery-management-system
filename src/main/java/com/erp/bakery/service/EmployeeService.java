@@ -18,10 +18,15 @@ import java.util.stream.Collectors;
 @Service
 public class EmployeeService {
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Autowired
-    private UserLoginRepository userLoginRepository;
+    private final UserLoginRepository userLoginRepository;
+
+    public EmployeeService(EmployeeRepository employeeRepository, UserLoginRepository userLoginRepository) {
+        this.employeeRepository = employeeRepository;
+        this.userLoginRepository = userLoginRepository;
+    }
 
     // Generate user ID based on role
     private String generateUserId(String role) {
