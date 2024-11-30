@@ -14,9 +14,14 @@ import java.util.List;
 @Service
 public class CategoryService {
     @Autowired
-    private CategoryRepository categoryRepository;
+    public final CategoryRepository categoryRepository;
     @Autowired
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
+
+    public CategoryService(CategoryRepository categoryRepository, ItemRepository itemRepository) {
+        this.categoryRepository = categoryRepository;
+        this.itemRepository = itemRepository;
+    }
 
 
     public Category addCategory(Category category) {
