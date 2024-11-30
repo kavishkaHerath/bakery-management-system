@@ -12,7 +12,7 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
     boolean existsByPhone(String phone);
 
     // Custom query to find all supplier with status true
-    @Query("SELECT new com.erp.bakery.model.SupplierDTO(s.supplierCode, s.supplierName) FROM Supplier s WHERE s.status = true")
+    @Query("SELECT new com.erp.bakery.model.SupplierDTO(s.supplierCode, CONCAT(s.companeyName, ' - ', s.supplierName)) FROM Supplier s WHERE s.status = true")
     List<SupplierDTO> findActiveSupplier();
 
 }

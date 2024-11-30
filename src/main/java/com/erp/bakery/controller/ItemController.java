@@ -105,4 +105,10 @@ public class ItemController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
         }
     }
+
+    @GetMapping("/get/active-by-supplier/{supplierCode}")
+    public ResponseEntity<List<ItemActiveDTO>> getActiveItemsBySupplier(@PathVariable Long supplierCode) {
+        List<ItemActiveDTO> items = itemService.getActiveItemsBySupplier(supplierCode);
+        return ResponseEntity.ok(items);
+    }
 }

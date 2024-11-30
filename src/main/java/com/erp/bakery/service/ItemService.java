@@ -14,7 +14,11 @@ import java.util.stream.Collectors;
 @Service
 public class ItemService {
     @Autowired
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
+
+    public ItemService(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
+    }
 
     public List<ItemDTO> findAllItemDetails() {
         return itemRepository.findAll().stream()
@@ -79,5 +83,9 @@ public class ItemService {
             throw new NotFoundException("Item not found with Item code: " + itemId);
         }
         itemRepository.deleteById(itemId);
+    }
+
+    public List<ItemActiveDTO> getActiveItemsBySupplier(Long supplierCode) {
+        return itemRepository.findActiveItemsBySupplier(supplierCode);
     }
 }
