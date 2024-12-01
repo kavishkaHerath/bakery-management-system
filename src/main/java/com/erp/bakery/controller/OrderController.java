@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/itemOrders")
 @CrossOrigin("*")
-public class ItemOrderController {
+public class OrderController {
     @Autowired
     private final OrderService orderService;
 
-    public ItemOrderController(OrderService orderService) {
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
 

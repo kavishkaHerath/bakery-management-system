@@ -1,9 +1,11 @@
 package com.erp.bakery.service;
 
+import com.erp.bakery.exception.DeletionException;
 import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.*;
 import com.erp.bakery.repository.ItemRepository;
+import com.erp.bakery.repository.OrderDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +17,12 @@ import java.util.stream.Collectors;
 public class ItemService {
     @Autowired
     private final ItemRepository itemRepository;
+    @Autowired
+    private final OrderDetailRepository orderDetailRepository;
 
-    public ItemService(ItemRepository itemRepository) {
+    public ItemService(ItemRepository itemRepository, OrderDetailRepository orderDetailRepository) {
         this.itemRepository = itemRepository;
+        this.orderDetailRepository = orderDetailRepository;
     }
 
     public List<ItemDTO> findAllItemDetails() {
@@ -81,6 +86,13 @@ public class ItemService {
     public void deleteItemById(Long itemId) {
         if (!itemRepository.existsById(itemId)) {
             throw new NotFoundException("Item not found with Item code: " + itemId);
+        }
+        // Check if the item is referenced in the Order table
+        boolean isReferenced = orderDetailRepository.existsByItem_ItemId(itemId);
+        if (isReferenced) {
+            throw new DeletionException(
+                    "Item with Item ID :" + itemId + " is associated with orders and cannot be deleted."
+            );
         }
         itemRepository.deleteById(itemId);
     }

@@ -16,9 +16,12 @@ import java.util.Locale;
 public class OrderService {
     @Autowired
     private final OrderRepository orderRepository;
+//    @Autowired
+//    private final OrderDetailRepository orderDetailRepository;
 
     public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
+//        this.orderDetailRepository = orderDetailRepository;
     }
 
     public Order saveItemOrder(Order order) {
@@ -27,7 +30,11 @@ public class OrderService {
         order.setOrderCode(orderCode);
 
         order.setRequestDate(LocalDate.now());
-        order.setStatus("P"); // If the status is 'P', the person who made this order can modify the requirements.
+        if (order.getRequestBy().substring(0, 3).equals("ADM")) {
+            order.setStatus("A");
+        } else {
+            order.setStatus("P");// If the status is 'P', the person who made this order can modify the requirements.
+        }
 
         var numberOfItems = 0;
         var totalPriceOfItem = 0.00;
@@ -97,8 +104,8 @@ public class OrderService {
         return existingOrder;
     }
 
-//    public void deleteItemDetails(ItemsOrder itemsOrder, String modifyingUser) {
-//        ItemsOrder existingOrder = itemOrderRepository.findById(itemsOrder.getItemOrderCode())
+//    public void deleteItemDetails(Order order, String modifyingUser) {
+//        Order existingOrder = orderRepository.findById(order.getOrderCode())
 //                .orElseThrow(() -> new RuntimeException("Items Order not found"));
 //        // Check if the status allows modification
 //        if (!"P".equals(existingOrder.getStatus())) {
@@ -112,23 +119,23 @@ public class OrderService {
 //        var numberOfItems = 0;
 //        var totalPriceOfItem = 0.00;
 //        // Update main order fields
-//        existingOrder.getItemOrderDetails().clear();
-//        existingOrder.getItemOrderDetails().addAll(itemsOrder.getItemOrderDetails());
+//        existingOrder.getOrderDetails().clear();
+//        existingOrder.getOrderDetails().addAll(order.getOrderDetails());
 //
 //        // Modify or update order details
-//        for (ItemOrderDetail item : itemsOrder.getItemOrderDetails()) {
+//        for (OrderDetail item : order.getOrderDetails()) {
 //            numberOfItems++;
 //            var total = item.getUnitPrice() * item.getQuantity();
 //            totalPriceOfItem += total;
 //            item.setTotalPrice(total);
 //        }
-//        existingOrder.setItemOrderDetails(itemsOrder.getItemOrderDetails());
-//        existingOrder.setExpectedDate(itemsOrder.getExpectedDate());
+//        existingOrder.setOrderDetails(order.getOrderDetails());
+//        existingOrder.setExpectedDate(order.getExpectedDate());
 //        existingOrder.setNumberOfItems(numberOfItems);
 //        existingOrder.setTotalPrice(totalPriceOfItem);
 //
 //        // Save the updated main order
-//        itemOrderRepository.save(existingOrder);
+//        orderRepository.save(existingOrder);
 //        return existingOrder;
 //    }
 }
