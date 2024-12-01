@@ -5,9 +5,11 @@ import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Supplier;
 import com.erp.bakery.model.SupplierDTO;
+import com.erp.bakery.model.dto.SupplierGetDTO;
 import com.erp.bakery.repository.ItemRepository;
 import com.erp.bakery.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -37,8 +39,8 @@ public class SupplierService {
         return supplierRepository.save(supplier);
     }
 
-    public List<Supplier> getAllSuppliers() {
-        return supplierRepository.findAll();
+    public List<SupplierGetDTO> getAllSuppliers() {
+        return supplierRepository.findAllSupplierDetails();
     }
 
     public Supplier getSupplierByCode(Long supplierCode) {

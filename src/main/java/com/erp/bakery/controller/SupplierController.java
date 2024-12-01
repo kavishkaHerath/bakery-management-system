@@ -5,6 +5,8 @@ import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Supplier;
 import com.erp.bakery.model.SupplierDTO;
+import com.erp.bakery.model.dto.SupplierGetDTO;
+import com.erp.bakery.repository.SupplierRepository;
 import com.erp.bakery.response.ResponseMessage;
 import com.erp.bakery.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,8 @@ public class SupplierController {
     @Autowired
     private final SupplierService supplierService;
 
-    public SupplierController(SupplierService supplierService) {
+    public SupplierController(SupplierService supplierService,
+                              SupplierRepository supplierRepository) {
         this.supplierService = supplierService;
     }
 
@@ -49,8 +52,8 @@ public class SupplierController {
     }
 
     @GetMapping("/get-all-supplier")
-    public ResponseEntity<List<Supplier>> getAllSuppliers() {
-        List<Supplier> suppliers = supplierService.getAllSuppliers();
+    public ResponseEntity<List<SupplierGetDTO>> getAllSuppliers() {
+        List<SupplierGetDTO> suppliers = supplierService.getAllSuppliers();
         return ResponseEntity.ok(suppliers);
     }
 
