@@ -10,6 +10,7 @@ import com.erp.bakery.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -32,6 +33,7 @@ public class SupplierService {
         if (supplierRepository.existsByPhone(supplier.getPhone())) {
             throw new DuplicateFieldException("Phone number " + supplier.getPhone() + " is already in use.");
         }
+        supplier.setAddDate(LocalDate.now());
         return supplierRepository.save(supplier);
     }
 
@@ -75,6 +77,8 @@ public class SupplierService {
         existingSupplier.setPhone(phone);
         existingSupplier.setAddress(updatedSupplier.getAddress());
         existingSupplier.setImageUrl(updatedSupplier.getImageUrl());
+        existingSupplier.setModifyDate(LocalDate.now());
+        existingSupplier.setModifiedEmployee(updatedSupplier.getModifiedEmployee());
 
         return supplierRepository.save(existingSupplier);
     }

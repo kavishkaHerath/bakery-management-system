@@ -3,6 +3,8 @@ package com.erp.bakery.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @ToString
@@ -30,5 +32,14 @@ public class Supplier {
     private String address;
     @Column(nullable = false)
     private Boolean status;
+    @ManyToOne
+    @JoinColumn(name = "addedUserId", referencedColumnName = "userId", nullable = false)
+    private Employee addedEmployee;
+    @Column(nullable = false, updatable = false)
+    private LocalDate addDate;
+    @ManyToOne
+    @JoinColumn(name = "modifiedUserId", referencedColumnName = "userId")
+    private Employee modifiedEmployee;
+    private LocalDate modifyDate;
     private String imageUrl;
 }
