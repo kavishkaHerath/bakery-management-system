@@ -77,7 +77,7 @@ public class ItemService {
         if (updateRequest.getSupplier() != null) {
             existingItem.setSupplier(updateRequest.getSupplier());
         }
-        existingItem.setModifyBy(updateRequest.getModifyBy());
+        existingItem.setModifiedEmployee(updateRequest.getModifiedEmployee());
         existingItem.setModifyDate(LocalDate.now());
         return itemRepository.save(existingItem);
     }

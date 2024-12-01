@@ -14,9 +14,9 @@ public class ItemDTO {
     private Long supplierCode;
     private String supplierName;
     private String addDate;
-    private String addBy;
+    private Employee addedEmployee;
     private String modifyDate;
-    private String modifyBy;
+    private Employee modifiedEmployee;
 
     public ItemDTO(Item item) {
         this.itemId = item.getItemId();
@@ -28,8 +28,8 @@ public class ItemDTO {
         this.supplierCode = item.getSupplier().getSupplierCode();
         this.supplierName = item.getSupplier().getSupplierName();
         this.addDate = item.getAddDate().toString();
-        this.addBy = item.getAddBy();
-        this.modifyDate = item.getModifyBy() != null ? item.getModifyBy().toString() : item.getModifyBy();
-        this.modifyBy = item.getModifyBy();
+        this.addedEmployee = item.getAddedEmployee();
+        this.modifyDate = item.getModifiedEmployee() == null ? "" : item.getModifyDate().toString();
+        this.modifiedEmployee = item.getModifiedEmployee();
     }
 }

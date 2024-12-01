@@ -31,9 +31,11 @@ public class Item {
     private Supplier supplier;
     @Column(nullable = false, updatable = false)
     private LocalDate addDate;
-    @Column(length = 8, nullable = false)
-    private String addBy;
+    @ManyToOne
+    @JoinColumn(name = "addedUserId", referencedColumnName = "userId", nullable = false)
+    private Employee addedEmployee;
     private LocalDate modifyDate;
-    @Column(length = 8)
-    private String modifyBy;
+    @ManyToOne
+    @JoinColumn(name = "modifiedUserId", referencedColumnName = "userId")
+    private Employee modifiedEmployee;
 }
