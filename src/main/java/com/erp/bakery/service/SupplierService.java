@@ -9,11 +9,11 @@ import com.erp.bakery.model.dto.SupplierGetDTO;
 import com.erp.bakery.repository.ItemRepository;
 import com.erp.bakery.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SupplierService {
@@ -43,10 +43,10 @@ public class SupplierService {
         return supplierRepository.findAllSupplierDetails();
     }
 
-    public Supplier getSupplierByCode(Long supplierCode) {
-        return supplierRepository.findById(supplierCode).orElseThrow(
+    public Optional<SupplierGetDTO> getSupplierByCode(Long supplierCode) {
+        return Optional.ofNullable(supplierRepository.findSupplierDetailsBySupplier(supplierCode).orElseThrow(
                 () -> new NotFoundException("Supplier not found with Supplier Code: " + supplierCode)
-        );
+        ));
     }
 
     public List<SupplierDTO> getActiveSupplier() {

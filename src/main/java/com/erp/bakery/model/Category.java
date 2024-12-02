@@ -1,12 +1,8 @@
 package com.erp.bakery.model;
-
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Data
 @Entity
 @Table(name = "categoryTbl", uniqueConstraints = {@UniqueConstraint(columnNames = "categoryName")})
 public class Category {

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/suppliers")
@@ -66,7 +67,7 @@ public class SupplierController {
     @GetMapping("getSupplier/{supplierCode}")
     public ResponseEntity<?> getSupplierByCode(@PathVariable Long supplierCode) {
         try {
-            Supplier supplier = supplierService.getSupplierByCode(supplierCode);
+            Optional<SupplierGetDTO> supplier = supplierService.getSupplierByCode(supplierCode);
             return ResponseEntity.ok(supplier);
         } catch (NotFoundException ex) {
             ResponseMessage responseMessage = new ResponseMessage(

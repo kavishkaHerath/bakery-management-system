@@ -5,10 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Data
 @Entity
 @Table(name = "employee", uniqueConstraints = {
         @UniqueConstraint(columnNames = "NIC"),
