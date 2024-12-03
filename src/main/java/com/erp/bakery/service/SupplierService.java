@@ -78,6 +78,7 @@ public class SupplierService {
         existingSupplier.setEmail(email);
         existingSupplier.setPhone(phone);
         existingSupplier.setAddress(updatedSupplier.getAddress());
+        existingSupplier.setStatus(updatedSupplier.getStatus());
         existingSupplier.setImageUrl(updatedSupplier.getImageUrl());
         existingSupplier.setModifyDate(LocalDate.now());
         existingSupplier.setModifiedEmployee(updatedSupplier.getModifiedEmployee());

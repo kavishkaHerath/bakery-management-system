@@ -17,7 +17,7 @@ public class EmployeeDTO {
     private String phone;
     private String address;
     private LocalDate addDate;
-    private String addBy;
+    private String addedUserId;
     private String imageUrl;
 
     // Constructor
@@ -35,7 +35,7 @@ public class EmployeeDTO {
         this.phone = employee.getPhone();
         this.address = employee.getAddress();
         this.addDate = employee.getAddDate();
-        this.addBy = employee.getAddBy();
+        this.addedUserId = employee.getAddBy();
         this.imageUrl = employee.getImageUrl();
     }
 }
