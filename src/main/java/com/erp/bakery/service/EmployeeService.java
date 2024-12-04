@@ -126,11 +126,11 @@ public class EmployeeService {
         if (updateRequest.getAddress() != null) {
             existingEmployee.setAddress(updateRequest.getAddress());
         }
-        if (updateRequest.getRoleId() != null) {
-            existingEmployee.setRoleId(updateRequest.getRoleId());
+        if (updateRequest.getRole() != null) {
+            existingEmployee.setRole(updateRequest.getRole());
         }
-        if (updateRequest.getLevelId() != null) {
-            existingEmployee.setLevelId(updateRequest.getLevelId());
+        if (updateRequest.getLevel() != null) {
+            existingEmployee.setLevel(updateRequest.getLevel());
         }
         if (updateRequest.getHireDate() != null) {
             existingEmployee.setHireDate(updateRequest.getHireDate());

@@ -32,14 +32,9 @@ public class Employee {
     private String phone;
     @Column(nullable = false)
     private String address;
-    @Column(nullable = false, length = 3)
-    private String roleId;
-    @Column(nullable = false)
-    private Long levelId;
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private String hireDate;
-
     @Column(nullable = false, updatable = false)
     private LocalDate addDate;
     @Column(nullable = false)
@@ -49,6 +44,13 @@ public class Employee {
     @Column(length = 8)
     private String modifyBy;
     private LocalDate modifyDate;
+
+    @ManyToOne
+    @JoinColumn(name = "roleId", referencedColumnName = "roleId", nullable = false)
+    private UserRole role;
+    @ManyToOne
+    @JoinColumn(name = "levelId", referencedColumnName = "levelId", nullable = false)
+    private EmployeeLevel level;
 
     @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     private UserLogin userLogin;

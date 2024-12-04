@@ -11,8 +11,8 @@ public class EmployeeDTO {
     private String dob;
     private String nic;
     private String email;
-    private String roleId;
-    private Long levelId;
+    private UserRole role;
+    private EmployeeLevel level;
     private String hireDate;
     private String phone;
     private String address;
@@ -29,8 +29,8 @@ public class EmployeeDTO {
         this.dob = employee.getDob();
         this.nic = employee.getNic();
         this.email = employee.getEmail();
-        this.roleId = employee.getRoleId();
-        this.levelId = employee.getLevelId();
+        this.role = employee.getRole();
+        this.level = employee.getLevel();
         this.hireDate = employee.getHireDate();
         this.phone = employee.getPhone();
         this.address = employee.getAddress();
