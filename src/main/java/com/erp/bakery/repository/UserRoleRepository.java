@@ -4,4 +4,7 @@ import com.erp.bakery.model.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRoleRepository extends JpaRepository<UserRole, String> {
+    boolean existsByRoleId(String roleId);
+
+    boolean existsByRoleName(String roleName);
 }

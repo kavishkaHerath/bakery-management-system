@@ -9,7 +9,7 @@ import lombok.Data;
 @Entity
 public class UserRole {
     @Id
-    @Column(length = 8)
+    @Column(length = 3)
     private String roleId;
     @Column(nullable = false, unique = true)
     private String roleName;
