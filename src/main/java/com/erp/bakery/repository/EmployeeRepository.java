@@ -11,4 +11,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, String> {
     boolean existsByNic(String nic);
     boolean existsByEmail(String email);
     boolean existsByPhone(String phone);
+
+    boolean existsByRole_RoleId(String roleId);
+
+    boolean existsByLevel_LevelId(Long levelId);
+
 }

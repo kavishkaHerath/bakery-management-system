@@ -4,6 +4,7 @@ import com.erp.bakery.exception.DeletionException;
 import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.UserRole;
+import com.erp.bakery.repository.EmployeeRepository;
 import com.erp.bakery.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,12 @@ import java.util.List;
 public class UserRoleService {
     @Autowired
     private final UserRoleRepository userRoleRepository;
+    @Autowired
+    private final EmployeeRepository employeeRepository;
 
-    public UserRoleService(UserRoleRepository userRoleRepository) {
+    public UserRoleService(UserRoleRepository userRoleRepository, EmployeeRepository employeeRepository) {
         this.userRoleRepository = userRoleRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     public List<UserRole> getAllUserRole() {
@@ -58,12 +62,12 @@ public class UserRoleService {
             throw new NotFoundException("User Role not found with User Role ID: " + userRoleId);
         }
         // Check if the category is referenced in the Item table
-//        boolean isReferenced = itemRepository.existsByUserRole_UserRoleId(userRoleId);
-//        if (isReferenced) {
-//            throw new DeletionException(
-//                    "UserRole with UserRole Code :" + userRoleId + " is associated with items and cannot be deleted."
-//            );
-//        }
+        boolean isReferenced = employeeRepository.existsByRole_RoleId(userRoleId);
+        if (isReferenced) {
+            throw new DeletionException(
+                    "UserRole with UserRole Code :" + userRoleId + " is associated with employee and cannot be deleted."
+            );
+        }
         userRoleRepository.deleteById(userRoleId);
     }
 

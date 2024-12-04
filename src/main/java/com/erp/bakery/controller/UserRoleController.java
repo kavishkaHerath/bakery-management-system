@@ -1,5 +1,6 @@
 package com.erp.bakery.controller;
 
+import com.erp.bakery.exception.DeletionException;
 import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.UserRole;
@@ -93,14 +94,13 @@ public class UserRoleController {
                     null  // No employee code for error response
             );
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
-//        } catch (DeletionException ex) {
-//            ResponseMessage responseMessage = new ResponseMessage(
-//                    "error",
-//                    ex.getMessage(),
-//                    userRoleId.toString()
-//            );
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMessage);
-//        }
+        } catch (DeletionException ex) {
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    userRoleId.toString()
+            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMessage);
         } catch (Exception ex) {
             ResponseMessage error = new ResponseMessage(
                     "error",

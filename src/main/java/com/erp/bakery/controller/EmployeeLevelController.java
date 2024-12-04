@@ -1,6 +1,10 @@
 package com.erp.bakery.controller;
 
+import com.erp.bakery.exception.DeletionException;
+import com.erp.bakery.exception.DuplicateFieldException;
+import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.EmployeeLevel;
+import com.erp.bakery.model.UserRole;
 import com.erp.bakery.response.ResponseMessage;
 import com.erp.bakery.service.EmployeeLevelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +44,65 @@ public class EmployeeLevelController {
             );
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 
+        }
+    }
+
+    @PutMapping("/editEmployeeLevelDetails")
+    public ResponseEntity<?> updateEmployeeLevelDetails(@RequestBody EmployeeLevel employeeLevel) {
+        try {
+            EmployeeLevel role = employeeLevelService.updateEmployeeLevel(employeeLevel);
+
+            ResponseMessage response = new ResponseMessage(
+                    "success",
+                    "Employee Level updated successfully",
+                    String.valueOf(employeeLevel.getLevelId())
+            );
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (DuplicateFieldException ex) {
+            ResponseMessage duplicateError = new ResponseMessage(
+                    "error-duplicate",
+                    ex.getMessage(),
+                    String.valueOf(employeeLevel.getLevelId())
+            );
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(duplicateError);
+        } catch (Exception ex) {
+            ResponseMessage error = new ResponseMessage(
+                    "error",
+                    "Failed to update Category: " + ex.getMessage(),
+                    null
+            );
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Method to delete employee by ID
+    @DeleteMapping("/delete/{levelId}")
+    public ResponseEntity<?> deleteEmployeeLevelDetails(@PathVariable Long levelId) {
+        try {
+            employeeLevelService.deleteUserRoleDetails(levelId); // Call service to delete the employee
+            return ResponseEntity.status(HttpStatus.OK).body("Employee level with Employee Level ID " + levelId + " deleted successfully.");
+        } catch (NotFoundException ex) {
+            // Handle employee not found
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null  // No employee code for error response
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        } catch (DeletionException ex) {
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    levelId.toString()
+            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMessage);
+        } catch (Exception ex) {
+            ResponseMessage error = new ResponseMessage(
+                    "error",
+                    "Failed to update Category: " + ex.getMessage(),
+                    null
+            );
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
     }
 }
