@@ -21,11 +21,11 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-//    @PostMapping("/add")
-//    public ResponseEntity<String> addItemOrder(@RequestBody Order order) {
-//        Order savedOrder = orderService.saveItemOrder(order);
-//        return ResponseEntity.ok("Item Order created successfully with code: " + savedOrder.getOrderCode());
-//    }
+    @PostMapping("/add")
+    public ResponseEntity<String> addItemOrder(@RequestBody Order order) {
+        Order savedOrder = orderService.saveItemOrder(order);
+        return ResponseEntity.ok("Item Order created successfully with code: " + savedOrder.getOrderCode());
+    }
 //
 //    @PutMapping("/edit/{modifyingUser}")
 //    public ResponseEntity<?> editItemOrder(@RequestBody Order order, @PathVariable String modifyingUser) {
