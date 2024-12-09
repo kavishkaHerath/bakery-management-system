@@ -1,9 +1,8 @@
 package com.erp.bakery.service;
 
-import com.erp.bakery.exception.AccessToModifyException;
+
 import com.erp.bakery.model.OrderDetail;
 import com.erp.bakery.model.Order;
-import com.erp.bakery.repository.OrderDetailRepository;
 import com.erp.bakery.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,7 @@ public class OrderService {
         order.setOrderCode(orderCode);
 
         order.setRequestDate(LocalDate.now());
-        if (requestUser.substring(0, 3).equals("ADM")) {
+        if (requestUser.startsWith("ADM")) {
             order.setStatus("A");
         } else {
             order.setStatus("P");// If the status is 'P', the person who made this order can modify the requirements.
