@@ -32,11 +32,11 @@ public class ItemService {
         return itemRepository.findAllItemsDetails();
     }
 
-//    public Optional<ItemGetByIdDTO> findItemById(Long itemId) {
-//        return Optional.ofNullable(itemRepository.findItemDetailsById(itemId).orElseThrow(
-//                () -> new NotFoundException("Items not found with Item Code: " + itemId)
-//        ));
-//    }
+    public Optional<ItemGetByIdDTO> findItemById(Long itemId) {
+        return Optional.ofNullable(itemRepository.findItemDetailsById(itemId).orElseThrow(
+                () -> new NotFoundException("Items not found with Item Code: " + itemId)
+        ));
+    }
 
     public Item addItem(Item item) {
         // Check for duplicate email and phone

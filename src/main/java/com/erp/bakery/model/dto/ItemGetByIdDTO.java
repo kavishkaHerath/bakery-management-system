@@ -8,16 +8,16 @@ public class ItemGetByIdDTO {
     private String itemName;
     private String displayName;
     private Boolean status;
-    private Integer categoryId;
+    private Long categoryId;
     private String categoryName;
-    private Integer supplierId;
+    private Long supplierId;
     private String supplierName;
     private String addedEmployee;
     private String modifiedEmployee;
     private String imageUrl;
 
-    public ItemGetByIdDTO(Long itemId, String itemName, String displayName, Boolean status, Integer categoryId, String categoryName,
-                          Integer supplierId, String supplierName, String addedEmployee, String modifiedEmployee, String imageUrl) {
+    public ItemGetByIdDTO(Long itemId, String itemName, String displayName, Boolean status, Long categoryId, String categoryName, Long supplierId,
+                          String supplierName, String addedEmployee, String modifiedEmployee, String imageUrl) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.displayName = displayName;

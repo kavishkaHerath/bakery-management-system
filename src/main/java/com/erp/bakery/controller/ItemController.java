@@ -54,21 +54,21 @@ public class ItemController {
         return itemService.findAllItemDetails();
     }
 
-//    @GetMapping("/getItem/{itemId}")
-//    public ResponseEntity<?> getItemById(@PathVariable Long itemId) {
-//        try {
-//            Optional<ItemGetByIdDTO> item = itemService.findItemById(itemId);
-//            return ResponseEntity.ok(item);
-//        } catch (NotFoundException ex) {
-//            // Handle item not found
-//            ResponseMessage responseMessage = new ResponseMessage(
-//                    "error",
-//                    ex.getMessage(),
-//                    null
-//            );
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
-//        }
-//    }
+    @GetMapping("/getItem/{itemId}")
+    public ResponseEntity<?> getItemById(@PathVariable Long itemId) {
+        try {
+            Optional<ItemGetByIdDTO> item = itemService.findItemById(itemId);
+            return ResponseEntity.ok(item);
+        } catch (NotFoundException ex) {
+            // Handle item not found
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        }
+    }
 
     @PutMapping("/editItemDetails")
     public ResponseEntity<ResponseMessage> updateItemDetails(@RequestBody Item updateRequest) {
