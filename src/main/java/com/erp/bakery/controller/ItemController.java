@@ -4,6 +4,8 @@ import com.erp.bakery.exception.DeletionException;
 import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.*;
+import com.erp.bakery.model.dto.ItemDTO;
+import com.erp.bakery.model.dto.ItemGetByIdDTO;
 import com.erp.bakery.response.ResponseMessage;
 import com.erp.bakery.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/items")
@@ -51,21 +54,21 @@ public class ItemController {
         return itemService.findAllItemDetails();
     }
 
-    @GetMapping("/getItem/{itemId}")
-    public ResponseEntity<?> getItemById(@PathVariable Long itemId) {
-        try {
-            ItemDTO itemDTO = itemService.findItemById(itemId);
-            return ResponseEntity.ok(itemDTO);
-        } catch (NotFoundException ex) {
-            // Handle item not found
-            ResponseMessage responseMessage = new ResponseMessage(
-                    "error",
-                    ex.getMessage(),
-                    null
-            );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
-        }
-    }
+//    @GetMapping("/getItem/{itemId}")
+//    public ResponseEntity<?> getItemById(@PathVariable Long itemId) {
+//        try {
+//            Optional<ItemGetByIdDTO> item = itemService.findItemById(itemId);
+//            return ResponseEntity.ok(item);
+//        } catch (NotFoundException ex) {
+//            // Handle item not found
+//            ResponseMessage responseMessage = new ResponseMessage(
+//                    "error",
+//                    ex.getMessage(),
+//                    null
+//            );
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+//        }
+//    }
 
     @PutMapping("/editItemDetails")
     public ResponseEntity<ResponseMessage> updateItemDetails(@RequestBody Item updateRequest) {

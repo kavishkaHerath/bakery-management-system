@@ -4,6 +4,9 @@ import com.erp.bakery.exception.DeletionException;
 import com.erp.bakery.exception.DuplicateFieldException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.*;
+import com.erp.bakery.model.dto.ItemDTO;
+import com.erp.bakery.model.dto.ItemGetByIdDTO;
+import com.erp.bakery.model.dto.SupplierGetDTO;
 import com.erp.bakery.repository.ItemRepository;
 import com.erp.bakery.repository.OrderDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class ItemService {
@@ -26,15 +29,14 @@ public class ItemService {
     }
 
     public List<ItemDTO> findAllItemDetails() {
-        return itemRepository.findAll().stream()
-                .map(ItemDTO::new)
-                .collect(Collectors.toList());
+        return itemRepository.findAllItemsDetails();
     }
 
-    public ItemDTO findItemById(Long itemId) {  
-        return new ItemDTO(itemRepository.findById(itemId)
-                .orElseThrow(() -> new NotFoundException("Items not found with Item Code: " + itemId)));
-    }
+//    public Optional<ItemGetByIdDTO> findItemById(Long itemId) {
+//        return Optional.ofNullable(itemRepository.findItemDetailsById(itemId).orElseThrow(
+//                () -> new NotFoundException("Items not found with Item Code: " + itemId)
+//        ));
+//    }
 
     public Item addItem(Item item) {
         // Check for duplicate email and phone
