@@ -3,11 +3,8 @@ package com.erp.bakery.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+@Data
 @Entity
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
 public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +20,6 @@ public class OrderDetail {
     private double unitPrice;
     @Column(nullable = false)
     private double totalPrice;
+    @Column(nullable = false)
+    private String requestBy;
 }
