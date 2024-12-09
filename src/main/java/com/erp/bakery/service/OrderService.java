@@ -44,7 +44,6 @@ public class OrderService {
 
         for (OrderDetail item : order.getOrderDetails()) {
             numberOfItems++;
-            System.out.println(item.getId());
             var total = item.getUnitPrice() * item.getQuantity();
             totalPriceOfItem += total;
             item.setTotalPrice(total);
