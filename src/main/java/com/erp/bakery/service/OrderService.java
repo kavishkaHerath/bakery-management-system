@@ -3,6 +3,8 @@ package com.erp.bakery.service;
 
 import com.erp.bakery.model.OrderDetail;
 import com.erp.bakery.model.Order;
+import com.erp.bakery.model.dto.ItemDTO;
+import com.erp.bakery.model.dto.OderDTO;
 import com.erp.bakery.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -68,6 +71,10 @@ public class OrderService {
 
         // Generate custom Order Code
         return datePart + requestBy + timePart;
+    }
+
+    public List<OderDTO> findAllOrderDetails() {
+        return orderRepository.findAllOrdersDetails();
     }
 //
 //    public Order updateItemsDetails(Order order, String modifyingUser) {

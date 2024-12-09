@@ -2,12 +2,16 @@ package com.erp.bakery.controller;
 
 import com.erp.bakery.exception.AccessToModifyException;
 import com.erp.bakery.model.Order;
+import com.erp.bakery.model.dto.ItemDTO;
+import com.erp.bakery.model.dto.OderDTO;
 import com.erp.bakery.response.ResponseMessage;
 import com.erp.bakery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -25,6 +29,11 @@ public class OrderController {
     public ResponseEntity<String> addItemOrder(@RequestBody Order order) {
         Order savedOrder = orderService.saveItemOrder(order);
         return ResponseEntity.ok("Item Order created successfully with code: " + savedOrder.getOrderCode());
+    }
+
+    @GetMapping("/all-order-details")
+    public List<OderDTO> getAllOrders() {
+        return orderService.findAllOrderDetails();
     }
 //
 //    @PutMapping("/edit/{modifyingUser}")
