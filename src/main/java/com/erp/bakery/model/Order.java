@@ -6,7 +6,10 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "order_tbl")
 public class Order {
@@ -16,10 +19,11 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "supplierCode", referencedColumnName = "supplierCode", nullable = false)
     private Supplier supplier;
-    @Column(length = 8, nullable = false)
-    private String requestBy;
+    @ManyToOne
+    @JoinColumn(name = "requestByUserId", referencedColumnName = "userId", nullable = false)
+    private Employee requestBy;
     @Column(nullable = false)
-    private String expectedDate;
+    private LocalDate expectedDate;
     @Column(nullable = false)
     private int numberOfItems;
     @Column(nullable = false)
@@ -30,7 +34,6 @@ public class Order {
     private String status;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_order_code", referencedColumnName = "orderCode")
-    @ToString.Exclude
+    @JoinColumn(name = "orderCode", referencedColumnName = "orderCode", nullable = false)
     private List<OrderDetail> orderDetails;
 }
