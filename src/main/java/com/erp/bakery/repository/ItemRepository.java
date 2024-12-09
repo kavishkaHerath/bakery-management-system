@@ -26,14 +26,14 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<ItemDTO> findAllItemsDetails();
 
     //Get item details by Item Id
-//    @Query("SELECT new com.erp.bakery.model.dto.ItemGetByIdDTO(" +
-//            "i.itemId, i.itemName, i.displayName, i.status, i.category.categoryId, i.category.categoryName," +
-//            "i.supplier.supplierCode, CONCAT(i.supplier.companeyName, ' - ', i.supplier.supplierName)," +
-//            "i.addedEmployee.userId, i.modifiedEmployee.userId, i.imageUrl)" +
-//            "FROM Item i " +
-//            "WHERE i.itemId = :itemId"
-//    )
-//    Optional<ItemGetByIdDTO> findItemDetailsById(@Param("itemId") Long itemId);
+    @Query("SELECT new com.erp.bakery.model.dto.ItemGetByIdDTO(" +
+            "i.itemId, i.itemName, i.displayName, i.status, i.category.categoryId, i.category.categoryName," +
+            "i.supplier.supplierCode, CONCAT(i.supplier.companeyName, ' - ', i.supplier.supplierName)," +
+            "i.addedEmployee.userId, i.modifiedEmployee.userId, i.imageUrl)" +
+            "FROM Item i " +
+            "WHERE i.itemId = :itemId"
+    )
+    Optional<ItemGetByIdDTO> findItemDetailsById(@Param("itemId") Long itemId);
 
     //Get active item details by Supplier Code
     @Query("SELECT new com.erp.bakery.model.ItemActiveDTO(i.itemId, CONCAT(i.itemName, ' - ', i.displayName))" +
