@@ -86,11 +86,11 @@ public class OrderService {
         Order existingOrder = orderRepository.findById(order.getOrderCode())
                 .orElseThrow(() -> new RuntimeException("Items Order not found"));
         // Check if the status allows modification
-        if (!"P".equals(existingOrder.getStatus())) {
-            throw new AccessToModifyException("Modification not allowed: status is not 'PENDING'!");
+        if ("A".equals(existingOrder.getStatus())) {
+            throw new AccessToModifyException("Modification not allowed: status is 'Approval'!");
         }
-        // Check if modifying user is allowed (assumes previous user validation logic) !order.getModifyUserID().startsWith("ADM") &&
-        if (!existingOrder.getRequestBy().getUserId().equals(order.getModifyUserID())) {
+        // Check if modifying user is allowed (assumes previous user validation logic)
+        if (!order.getModifyUserID().startsWith("ADM") && !existingOrder.getRequestBy().getUserId().equals(order.getModifyUserID())) {
             throw new AccessToModifyException("You can't modify this.");
             //return ResponseEntity.status(HttpStatus.FORBIDDEN).body(");
         }
@@ -117,7 +117,6 @@ public class OrderService {
         } else {
             existingOrder.setStatus("P");// If the status is 'P', the person who made this order can modify the requirements.
         }
-
         // Save the updated main order
         orderRepository.save(existingOrder);
         return existingOrder;
