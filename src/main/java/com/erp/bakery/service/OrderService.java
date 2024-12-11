@@ -34,10 +34,11 @@ public class OrderService {
         var requestUser = order.getRequestBy().getUserId();
         String orderCode = generateItemOrderCode(requestUser);
         order.setOrderCode(orderCode);
-
         order.setRequestDate(LocalDate.now());
+
         if (requestUser.startsWith("ADM")) {
             order.setStatus("A");
+            order.setApprovedDate(LocalDate.now());
         } else {
             order.setStatus("P");// If the status is 'P', the person who made this order can modify the requirements.
         }
@@ -87,7 +88,7 @@ public class OrderService {
                 .orElseThrow(() -> new RuntimeException("Items Order not found"));
         // Check if the status allows modification
         if ("A".equals(existingOrder.getStatus())) {
-            throw new AccessToModifyException("Modification not allowed: status is 'Approval'!");
+            throw new AccessToModifyException("Modification not allowed: status is 'APPROVED'!");
         }
         // Check if modifying user is allowed (assumes previous user validation logic)
         if (!order.getModifyUserID().startsWith("ADM") && !existingOrder.getRequestBy().getUserId().equals(order.getModifyUserID())) {
@@ -114,6 +115,7 @@ public class OrderService {
         existingOrder.setRequestDate(LocalDate.now());
         if (order.getModifyUserID().startsWith("ADM")) {
             existingOrder.setStatus("A");
+            existingOrder.setApprovedDate(LocalDate.now());
         } else {
             existingOrder.setStatus("P");// If the status is 'P', the person who made this order can modify the requirements.
         }

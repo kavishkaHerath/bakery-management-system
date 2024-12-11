@@ -12,7 +12,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     @Query("SELECT new com.erp.bakery.model.dto.OderDTO(" +
             "o.orderCode, CONCAT(o.supplier.companeyName, ' - ', o.supplier.supplierName)," +
             "o.numberOfItems, o.totalPrice, o.expectedDate, o.status, " +
-            "o.requestBy.userId, CONCAT(o.requestBy.firstName, ' ', o.requestBy.lastName), o.requestDate)" +
+            "o.requestBy.userId, CONCAT(o.requestBy.firstName, ' ', o.requestBy.lastName), o.requestDate, o.approvedDate)" +
             "FROM Order o"
     )
     List<OderDTO> findAllOrdersDetails();
@@ -21,7 +21,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     @Query("SELECT new com.erp.bakery.model.dto.OderDTO(" +
             "o.orderCode, CONCAT(o.supplier.companeyName, ' - ', o.supplier.supplierName)," +
             "o.numberOfItems, o.totalPrice, o.expectedDate, o.status, " +
-            "o.requestBy.userId, CONCAT(o.requestBy.firstName, ' ', o.requestBy.lastName), o.requestDate)" +
+            "o.requestBy.userId, CONCAT(o.requestBy.firstName, ' ', o.requestBy.lastName), o.requestDate, o.approvedDate)" +
             "FROM Order o " +
             "WHERE o.requestBy.userId = :managerId"
     )

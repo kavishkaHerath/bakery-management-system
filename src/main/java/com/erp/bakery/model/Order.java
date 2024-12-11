@@ -28,6 +28,7 @@ public class Order {
     private LocalDate requestDate;
     @Column(length = 1, nullable = false)
     private String status;
+    private LocalDate approvedDate;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "orderCode", referencedColumnName = "orderCode", nullable = false)

@@ -14,9 +14,10 @@ public class OderDTO {
     private String requestByUserId;
     private String requestByUserName;
     private LocalDate requestDate;
+    private LocalDate approvedDate;
 
     public OderDTO(String orderCode, String supplierName, int numberOfItems, double totalPrice, LocalDate expectedDate,
-                   String status, String requestByUserId, String requestByUserName, LocalDate requestDate) {
+                   String status, String requestByUserId, String requestByUserName, LocalDate requestDate, LocalDate approvedDate) {
         this.orderCode = orderCode;
         this.supplierName = supplierName;
         this.numberOfItems = numberOfItems;
@@ -26,5 +27,6 @@ public class OderDTO {
         this.requestByUserId = requestByUserId;
         this.requestByUserName = requestByUserName;
         this.requestDate = requestDate;
+        this.approvedDate = approvedDate;
     }
 }
