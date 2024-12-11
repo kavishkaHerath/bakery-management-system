@@ -1,9 +1,11 @@
 package com.erp.bakery.service;
 
 
+import com.erp.bakery.exception.AccessToModifyException;
 import com.erp.bakery.model.OrderDetail;
 import com.erp.bakery.model.Order;
 import com.erp.bakery.model.dto.OderDTO;
+import com.erp.bakery.model.dto.OrderModify;
 import com.erp.bakery.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,41 +81,47 @@ public class OrderService {
     public List<OderDTO> findAllOrderDetailsByManagerId(String managerId) {
         return orderRepository.findAllOrdersDetailsByManagerID(managerId);
     }
-//
-//    public Order updateItemsDetails(Order order, String modifyingUser) {
-//        Order existingOrder = orderRepository.findById(order.getOrderCode())
-//                .orElseThrow(() -> new RuntimeException("Items Order not found"));
-//        // Check if the status allows modification
-//        if (!"P".equals(existingOrder.getStatus())) {
-//            throw new AccessToModifyException("Modification not allowed: status is not 'PENDING'!");
-//        }
-//        // Check if modifying user is allowed (assumes previous user validation logic)
-//        if (!"admin".equals(modifyingUser) && !existingOrder.getRequestBy().equals(modifyingUser)) {
-//            throw new AccessToModifyException("You can't modify this.");
-//            //return ResponseEntity.status(HttpStatus.FORBIDDEN).body(");
-//        }
-//        var numberOfItems = 0;
-//        var totalPriceOfItem = 0.00;
-//        // Update main order fields
-//        existingOrder.getOrderDetails().clear();
-//        existingOrder.getOrderDetails().addAll(order.getOrderDetails());
-//
-//        // Modify or update order details
-//        for (OrderDetail item : order.getOrderDetails()) {
-//            numberOfItems++;
-//            var total = item.getUnitPrice() * item.getQuantity();
-//            totalPriceOfItem += total;
-//            item.setTotalPrice(total);
-//        }
-//        existingOrder.setOrderDetails(order.getOrderDetails());
-//        existingOrder.setExpectedDate(order.getExpectedDate());
-//        existingOrder.setNumberOfItems(numberOfItems);
-//        existingOrder.setTotalPrice(totalPriceOfItem);
-//
-//        // Save the updated main order
-//        orderRepository.save(existingOrder);
-//        return existingOrder;
-//    }
+
+    public Order updateItemsDetails(OrderModify order) {
+        Order existingOrder = orderRepository.findById(order.getOrderCode())
+                .orElseThrow(() -> new RuntimeException("Items Order not found"));
+        // Check if the status allows modification
+        if (!"P".equals(existingOrder.getStatus())) {
+            throw new AccessToModifyException("Modification not allowed: status is not 'PENDING'!");
+        }
+        // Check if modifying user is allowed (assumes previous user validation logic) !order.getModifyUserID().startsWith("ADM") &&
+        if (!existingOrder.getRequestBy().getUserId().equals(order.getModifyUserID())) {
+            throw new AccessToModifyException("You can't modify this.");
+            //return ResponseEntity.status(HttpStatus.FORBIDDEN).body(");
+        }
+        var numberOfItems = 0;
+        var totalPriceOfItem = 0.00;
+        // Update main order fields
+        existingOrder.getOrderDetails().clear();
+        existingOrder.getOrderDetails().addAll(order.getOrderDetails());
+
+        // Modify or update order details
+        for (OrderDetail item : order.getOrderDetails()) {
+            numberOfItems++;
+            var total = item.getUnitPrice() * item.getQuantity();
+            totalPriceOfItem += total;
+            item.setTotalPrice(total);
+        }
+        existingOrder.setOrderDetails(order.getOrderDetails());
+        existingOrder.setExpectedDate(order.getExpectedDate());
+        existingOrder.setNumberOfItems(numberOfItems);
+        existingOrder.setTotalPrice(totalPriceOfItem);
+        existingOrder.setRequestDate(LocalDate.now());
+        if (order.getModifyUserID().startsWith("ADM")) {
+            existingOrder.setStatus("A");
+        } else {
+            existingOrder.setStatus("P");// If the status is 'P', the person who made this order can modify the requirements.
+        }
+
+        // Save the updated main order
+        orderRepository.save(existingOrder);
+        return existingOrder;
+    }
 
 //    public void deleteItemDetails(Order order, String modifyingUser) {
 //        Order existingOrder = orderRepository.findById(order.getOrderCode())
