@@ -1,8 +1,11 @@
 package com.erp.bakery.controller;
 
 import com.erp.bakery.exception.AccessToModifyException;
+import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Order;
+import com.erp.bakery.model.dto.ItemGetByIdDTO;
 import com.erp.bakery.model.dto.OderDTO;
+import com.erp.bakery.model.dto.OrderDTOGet;
 import com.erp.bakery.model.dto.OrderModify;
 import com.erp.bakery.response.ResponseMessage;
 import com.erp.bakery.service.OrderService;
@@ -12,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -39,6 +43,21 @@ public class OrderController {
     @GetMapping("/all-order-details/{managerId}")
     public List<OderDTO> getAllOrdersByManagerId(@PathVariable String managerId) {
         return orderService.findAllOrderDetailsByManagerId(managerId);
+    }
+
+    @GetMapping("/get-order-details/{orderCode}")
+    public ResponseEntity<?> getOrderByOrderNumber(@PathVariable String orderCode) {
+        try {
+            OrderDTOGet order = orderService.getOrderByOrderNumber(orderCode);
+            return ResponseEntity.ok(order);
+        } catch (NotFoundException ex) {
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        }
     }
 
     @PutMapping("/edit")

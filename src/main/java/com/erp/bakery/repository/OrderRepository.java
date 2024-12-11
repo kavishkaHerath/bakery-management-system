@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, String> {
     //Get all items details
@@ -26,4 +27,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             "WHERE o.requestBy.userId = :managerId"
     )
     List<OderDTO> findAllOrdersDetailsByManagerID(String managerId);
+
+    Optional<Order> findByOrderCode(String orderCode);
+
 }

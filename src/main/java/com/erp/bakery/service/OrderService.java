@@ -2,9 +2,12 @@ package com.erp.bakery.service;
 
 
 import com.erp.bakery.exception.AccessToModifyException;
+import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.OrderDetail;
 import com.erp.bakery.model.Order;
+import com.erp.bakery.model.dto.ItemGetByIdDTO;
 import com.erp.bakery.model.dto.OderDTO;
+import com.erp.bakery.model.dto.OrderDTOGet;
 import com.erp.bakery.model.dto.OrderModify;
 import com.erp.bakery.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -83,6 +87,26 @@ public class OrderService {
         return orderRepository.findAllOrdersDetailsByManagerID(managerId);
     }
 
+    public OrderDTOGet getOrderByOrderNumber(String orderCode) {
+        Order order = orderRepository.findByOrderCode(orderCode).orElseThrow(
+                () -> new RuntimeException("Order not found with order number: " + orderCode)
+        );
+        List<OrderDTOGet.OrderDetailDTO> orderDetails = order.getOrderDetails().stream()
+                .map(orderDetail -> new OrderDTOGet.OrderDetailDTO(
+                        orderDetail.getId(),
+                        orderDetail.getItem().getItemName(),
+                        orderDetail.getQuantity(),
+                        orderDetail.getUnitPrice(),
+                        orderDetail.getTotalPrice(),
+                        orderDetail.getRequestBy())).toList();
+        return new OrderDTOGet(
+                order.getOrderCode(),
+                order.getExpectedDate(),
+                order.getNumberOfItems(),
+                order.getTotalPrice(),
+                order.getRequestDate(),
+                orderDetails);
+    }
     public Order updateItemsDetails(OrderModify order) {
         Order existingOrder = orderRepository.findById(order.getOrderCode())
                 .orElseThrow(() -> new RuntimeException("Items Order not found"));
