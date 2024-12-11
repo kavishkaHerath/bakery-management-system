@@ -3,7 +3,6 @@ package com.erp.bakery.service;
 
 import com.erp.bakery.model.OrderDetail;
 import com.erp.bakery.model.Order;
-import com.erp.bakery.model.dto.ItemDTO;
 import com.erp.bakery.model.dto.OderDTO;
 import com.erp.bakery.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +74,10 @@ public class OrderService {
 
     public List<OderDTO> findAllOrderDetails() {
         return orderRepository.findAllOrdersDetails();
+    }
+
+    public List<OderDTO> findAllOrderDetailsByManagerId(String managerId) {
+        return orderRepository.findAllOrdersDetailsByManagerID(managerId);
     }
 //
 //    public Order updateItemsDetails(Order order, String modifyingUser) {

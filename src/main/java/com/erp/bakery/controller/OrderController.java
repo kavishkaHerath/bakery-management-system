@@ -1,13 +1,9 @@
 package com.erp.bakery.controller;
 
-import com.erp.bakery.exception.AccessToModifyException;
 import com.erp.bakery.model.Order;
-import com.erp.bakery.model.dto.ItemDTO;
 import com.erp.bakery.model.dto.OderDTO;
-import com.erp.bakery.response.ResponseMessage;
 import com.erp.bakery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +30,11 @@ public class OrderController {
     @GetMapping("/all-order-details")
     public List<OderDTO> getAllOrders() {
         return orderService.findAllOrderDetails();
+    }
+
+    @GetMapping("/all-order-details/{managerId}")
+    public List<OderDTO> getAllOrdersByManagerId(@PathVariable String managerId) {
+        return orderService.findAllOrderDetailsByManagerId(managerId);
     }
 //
 //    @PutMapping("/edit/{modifyingUser}")
