@@ -163,6 +163,17 @@ public class OrderService {
         orderRepository.save(existingOrder);
     }
 
+    public void orderDetailsSentToGRN(String orderCode) {
+        Order existingOrder = orderRepository.findById(orderCode)
+                .orElseThrow(() -> new RuntimeException("Items Order not found"));
+        if (!existingOrder.getStatus().equals("A")) {
+            throw new AccessToModifyException("The order cannot be sent to GRN because its status is not 'APPROVED'!");
+        }
+        existingOrder.setStatus("S");
+        existingOrder.setApprovedDate(LocalDate.now());
+        orderRepository.save(existingOrder);
+    }
+
     public void deleteOrderByOrderId(String orderCode, String requestUser) {
         Order existingOrder = orderRepository.findById(orderCode)
                 .orElseThrow(() -> new NotFoundException("Order not found with Order code: " + orderCode));

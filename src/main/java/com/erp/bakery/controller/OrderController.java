@@ -132,6 +132,30 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/send-to-GRN/{orderCode}")
+    public ResponseEntity<?> orderDetailsSendToGRN(@PathVariable String orderCode) {
+        try {
+            orderService.orderDetailsSentToGRN(orderCode);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    "Order details with order code " + orderCode + " sent to GRN successfully");
+        } catch (NotFoundException ex) {
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        } catch (Exception ex) {
+            ResponseMessage error = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
+
+
     @DeleteMapping("/delete/{orderCode}/{requestUser}")
     public ResponseEntity<?> deleteOrderDetails(@PathVariable String orderCode, @PathVariable String requestUser) {
         try {
