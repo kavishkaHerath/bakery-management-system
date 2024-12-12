@@ -4,7 +4,6 @@ import com.erp.bakery.exception.AccessToModifyException;
 import com.erp.bakery.exception.DeletionException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Order;
-import com.erp.bakery.model.dto.ItemGetByIdDTO;
 import com.erp.bakery.model.dto.OderDTO;
 import com.erp.bakery.model.dto.OrderDTOGet;
 import com.erp.bakery.model.dto.OrderModify;
@@ -16,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -131,6 +129,29 @@ public class OrderController {
                     null
             );
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
+
+    @DeleteMapping("/delete/{orderCode}/{requestUser}")
+    public ResponseEntity<?> deleteOrderDetails(@PathVariable String orderCode, @PathVariable String requestUser) {
+        try {
+            orderService.deleteOrderByOrderId(orderCode, requestUser); // Call service to delete the employee
+            return ResponseEntity.status(HttpStatus.OK).body("Oder details with Order Code " + orderCode + " deleted successfully.");
+        } catch (NotFoundException ex) {
+            // Handle employee not found
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        } catch (AccessToModifyException ex) {
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    orderCode
+            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMessage);
         }
     }
 }
