@@ -1,6 +1,7 @@
 package com.erp.bakery.controller;
 
 import com.erp.bakery.exception.AccessToModifyException;
+import com.erp.bakery.exception.DeletionException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.Order;
 import com.erp.bakery.model.dto.ItemGetByIdDTO;
@@ -45,21 +46,6 @@ public class OrderController {
         return orderService.findAllOrderDetailsByManagerId(managerId);
     }
 
-    @GetMapping("/get-order-details/{orderCode}")
-    public ResponseEntity<?> getOrderByOrderNumber(@PathVariable String orderCode) {
-        try {
-            OrderDTOGet order = orderService.getOrderByOrderNumber(orderCode);
-            return ResponseEntity.ok(order);
-        } catch (NotFoundException ex) {
-            ResponseMessage responseMessage = new ResponseMessage(
-                    "error",
-                    ex.getMessage(),
-                    null
-            );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
-        }
-    }
-
     @PutMapping("/edit")
     public ResponseEntity<?> editItemOrder(@RequestBody OrderModify order) {
         try {
@@ -77,6 +63,44 @@ public class OrderController {
                     order.getOrderCode()
             );
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error_duplicate);
+        } catch (Exception ex) {
+            ResponseMessage error = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
+
+    @GetMapping("/get-order-details/{orderCode}")
+    public ResponseEntity<?> getOrderByOrderNumber(@PathVariable String orderCode) {
+        try {
+            OrderDTOGet order = orderService.getOrderByOrderNumber(orderCode);
+            return ResponseEntity.ok(order);
+        } catch (NotFoundException ex) {
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        }
+    }
+
+    @GetMapping("/approval/{orderCode}")
+    public ResponseEntity<?> approvalOrder(@PathVariable String orderCode) {
+        try {
+            orderService.updateApproval(orderCode);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    "Order with Order Code " + orderCode + " APPROVED successfully.");
+        } catch (NotFoundException ex) {
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
         } catch (Exception ex) {
             ResponseMessage error = new ResponseMessage(
                     "error",

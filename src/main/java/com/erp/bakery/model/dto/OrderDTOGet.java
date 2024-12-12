@@ -17,21 +17,21 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderDTOGet {
     private String orderCode;
-    //    private String requestBy;
     private LocalDate expectedDate;
+    private String status;
+    private LocalDate approvalDate;
     private int numberOfItems;
     private double totalPrice;
     private LocalDate requestDate;
-    //private String modifyUserID;
-    //private LocalDate approvedDate;
     private List<OrderDetailDTO> orderDetails;
 
     @Data
     @AllArgsConstructor
 
     public static class OrderDetailDTO {
-        private Long id; // PK
-        private String item; // FK to Item table
+        private Long id;
+        private Long itemId;
+        private String itemName;
         private int quantity;
         private double unitPrice;
         private double totalPrice;

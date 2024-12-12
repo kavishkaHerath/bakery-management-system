@@ -2,6 +2,7 @@ package com.erp.bakery.service;
 
 
 import com.erp.bakery.exception.AccessToModifyException;
+import com.erp.bakery.exception.DeletionException;
 import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.OrderDetail;
 import com.erp.bakery.model.Order;
@@ -87,26 +88,6 @@ public class OrderService {
         return orderRepository.findAllOrdersDetailsByManagerID(managerId);
     }
 
-    public OrderDTOGet getOrderByOrderNumber(String orderCode) {
-        Order order = orderRepository.findByOrderCode(orderCode).orElseThrow(
-                () -> new RuntimeException("Order not found with order number: " + orderCode)
-        );
-        List<OrderDTOGet.OrderDetailDTO> orderDetails = order.getOrderDetails().stream()
-                .map(orderDetail -> new OrderDTOGet.OrderDetailDTO(
-                        orderDetail.getId(),
-                        orderDetail.getItem().getItemName(),
-                        orderDetail.getQuantity(),
-                        orderDetail.getUnitPrice(),
-                        orderDetail.getTotalPrice(),
-                        orderDetail.getRequestBy())).toList();
-        return new OrderDTOGet(
-                order.getOrderCode(),
-                order.getExpectedDate(),
-                order.getNumberOfItems(),
-                order.getTotalPrice(),
-                order.getRequestDate(),
-                orderDetails);
-    }
     public Order updateItemsDetails(OrderModify order) {
         Order existingOrder = orderRepository.findById(order.getOrderCode())
                 .orElseThrow(() -> new RuntimeException("Items Order not found"));
@@ -146,6 +127,39 @@ public class OrderService {
         // Save the updated main order
         orderRepository.save(existingOrder);
         return existingOrder;
+    }
+
+
+    public OrderDTOGet getOrderByOrderNumber(String orderCode) {
+        Order order = orderRepository.findByOrderCode(orderCode).orElseThrow(
+                () -> new RuntimeException("Order not found with order number: " + orderCode)
+        );
+        List<OrderDTOGet.OrderDetailDTO> orderDetails = order.getOrderDetails().stream()
+                .map(orderDetail -> new OrderDTOGet.OrderDetailDTO(
+                        orderDetail.getId(),
+                        orderDetail.getItem().getItemId(),
+                        orderDetail.getItem().getItemName(),
+                        orderDetail.getQuantity(),
+                        orderDetail.getUnitPrice(),
+                        orderDetail.getTotalPrice(),
+                        orderDetail.getRequestBy())).toList();
+        return new OrderDTOGet(
+                order.getOrderCode(),
+                order.getExpectedDate(),
+                order.getStatus(),
+                order.getApprovedDate(),
+                order.getNumberOfItems(),
+                order.getTotalPrice(),
+                order.getRequestDate(),
+                orderDetails);
+    }
+
+    public void updateApproval(String orderCode) {
+        Order existingOrder = orderRepository.findById(orderCode)
+                .orElseThrow(() -> new RuntimeException("Items Order not found"));
+        existingOrder.setStatus("A");
+        existingOrder.setApprovedDate(LocalDate.now());
+        orderRepository.save(existingOrder);
     }
 
 //    public void deleteItemDetails(Order order, String modifyingUser) {
