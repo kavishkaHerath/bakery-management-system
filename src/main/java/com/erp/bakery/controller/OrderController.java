@@ -110,4 +110,27 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
     }
+
+    @GetMapping("/reject/{orderCode}")
+    public ResponseEntity<?> rejectOrder(@PathVariable String orderCode) {
+        try {
+            orderService.updateReject(orderCode);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    "Order with Order Code " + orderCode + " REJECTED successfully.");
+        } catch (NotFoundException ex) {
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        } catch (Exception ex) {
+            ResponseMessage error = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
 }

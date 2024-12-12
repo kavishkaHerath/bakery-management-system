@@ -162,6 +162,14 @@ public class OrderService {
         orderRepository.save(existingOrder);
     }
 
+    public void updateReject(String orderCode) {
+        Order existingOrder = orderRepository.findById(orderCode)
+                .orElseThrow(() -> new RuntimeException("Items Order not found"));
+        existingOrder.setStatus("R");
+        existingOrder.setApprovedDate(LocalDate.now());
+        orderRepository.save(existingOrder);
+    }
+
 //    public void deleteItemDetails(Order order, String modifyingUser) {
 //        Order existingOrder = orderRepository.findById(order.getOrderCode())
 //                .orElseThrow(() -> new RuntimeException("Items Order not found"));
