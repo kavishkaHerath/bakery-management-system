@@ -125,7 +125,7 @@ public class OrderService {
 
     public OrderDTOGet getOrderByOrderNumber(String orderCode) {
         Order order = orderRepository.findByOrderCode(orderCode).orElseThrow(
-                () -> new RuntimeException("Order not found with order number: " + orderCode)
+                () -> new NotFoundException("Order not found with order number: " + orderCode)
         );
         List<OrderDTOGet.OrderDetailDTO> orderDetails = order.getOrderDetails().stream()
                 .map(orderDetail -> new OrderDTOGet.OrderDetailDTO(

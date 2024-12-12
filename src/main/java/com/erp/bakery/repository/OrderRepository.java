@@ -14,7 +14,8 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             "o.orderCode, CONCAT(o.supplier.companeyName, ' - ', o.supplier.supplierName)," +
             "o.numberOfItems, o.totalPrice, o.expectedDate, o.status, " +
             "o.requestBy.userId, CONCAT(o.requestBy.firstName, ' ', o.requestBy.lastName), o.requestDate, o.approvedDate)" +
-            "FROM Order o"
+            "FROM Order o " +
+            "WHERE o.status <> 'S' "
     )
     List<OderDTO> findAllOrdersDetails();
 
@@ -24,7 +25,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             "o.numberOfItems, o.totalPrice, o.expectedDate, o.status, " +
             "o.requestBy.userId, CONCAT(o.requestBy.firstName, ' ', o.requestBy.lastName), o.requestDate, o.approvedDate)" +
             "FROM Order o " +
-            "WHERE o.requestBy.userId = :managerId"
+            "WHERE o.requestBy.userId = :managerId AND o.status <> 'S'"
     )
     List<OderDTO> findAllOrdersDetailsByManagerID(String managerId);
 
