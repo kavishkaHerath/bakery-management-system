@@ -1,9 +1,6 @@
 package com.erp.bakery.model.dto;
 
-import com.erp.bakery.model.Item;
-import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDate;
 
 @Data

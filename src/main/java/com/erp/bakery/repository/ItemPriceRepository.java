@@ -3,17 +3,17 @@ package com.erp.bakery.repository;
 import com.erp.bakery.model.Item;
 import com.erp.bakery.model.ItemPrice;
 import com.erp.bakery.model.dto.ItemPriceDTO;
-import com.erp.bakery.model.dto.OderDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
 public interface ItemPriceRepository extends JpaRepository<ItemPrice, Long> {
-    boolean existsByItemAndPurchasePriceAndSellingPrice(
+    boolean existsByItemAndPurchasePriceAndSellingPriceAndStatus(
             Item item,
             double purchasePrice,
-            double sellingPrice
+            double sellingPrice,
+            boolean status
     );
 
     //Get all GRN details

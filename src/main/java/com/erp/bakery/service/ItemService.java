@@ -7,7 +7,6 @@ import com.erp.bakery.model.*;
 import com.erp.bakery.model.dto.ItemDTO;
 import com.erp.bakery.model.dto.ItemGetByIdDTO;
 import com.erp.bakery.model.dto.ItemPriceDTO;
-import com.erp.bakery.model.dto.OderDTO;
 import com.erp.bakery.repository.ItemPriceRepository;
 import com.erp.bakery.repository.ItemRepository;
 import com.erp.bakery.repository.OrderDetailRepository;
@@ -110,12 +109,13 @@ public class ItemService {
 
     //add item price
     public ItemPrice addItemPrice(ItemPrice itemPrice) {
-        // Check for duplicate email and phone
-        if (itemPriceRepository.existsByItemAndPurchasePriceAndSellingPrice(
+        // Check for duplicate
+        if (itemPriceRepository.existsByItemAndPurchasePriceAndSellingPriceAndStatus(
                 itemPrice.getItem(),
                 itemPrice.getPurchasePrice(),
-                itemPrice.getSellingPrice())
-        ) {
+                itemPrice.getSellingPrice(),
+                itemPrice.isStatus()
+        )) {
             throw new DuplicateFieldException("Duplicate entry: An item with the same item, purchase price, and selling price already exists.");
         }
         // Set to current date without time
