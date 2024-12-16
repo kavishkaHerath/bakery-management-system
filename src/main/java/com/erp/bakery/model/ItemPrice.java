@@ -22,4 +22,11 @@ public class ItemPrice {
     private double sellingPrice;
     @Column(nullable = false)
     private LocalDate addedDate;
+    @ManyToOne
+    @JoinColumn(name = "addedUser", referencedColumnName = "userId", nullable = false)
+    Employee addEmployee;
+    private LocalDate modifyDate;
+    @ManyToOne
+    @JoinColumn(name = "modifiedUser", referencedColumnName = "userId")
+    Employee modifyEmployee;
 }
