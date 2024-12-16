@@ -12,6 +12,8 @@ import com.erp.bakery.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -42,16 +44,21 @@ public class OrderService {
         }
 
         var numberOfItems = 0;
-        var totalPriceOfItem = 0.00;
+        BigDecimal totalPriceOfItem = BigDecimal.ZERO;
 
         for (OrderDetail item : order.getOrderDetails()) {
             numberOfItems++;
-            var total = item.getUnitPrice() * item.getQuantity();
-            totalPriceOfItem += total;
-            item.setTotalPrice(total);
+            // Calculate total for each item using BigDecimal
+            BigDecimal unitPrice = BigDecimal.valueOf(item.getUnitPrice());
+            BigDecimal quantity = BigDecimal.valueOf(item.getQuantity());
+            BigDecimal total = unitPrice.multiply(quantity).setScale(2, RoundingMode.HALF_UP); // Scale set to 2 for currency precision
+            totalPriceOfItem = totalPriceOfItem.add(total);// Add to the total price
+            System.out.println(total);
+            System.out.println(total.doubleValue());
+            item.setTotalPrice(total.doubleValue());
         }
         order.setNumberOfItems(numberOfItems);
-        order.setTotalPrice(totalPriceOfItem);
+        order.setTotalPrice(totalPriceOfItem.doubleValue());
         // Save order and associated orderDetails
         orderRepository.save(order);
 
