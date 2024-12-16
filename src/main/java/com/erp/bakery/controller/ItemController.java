@@ -126,4 +126,26 @@ public class ItemController {
         List<ItemActiveDTO> items = itemService.getActiveItemsBySupplier(supplierCode);
         return ResponseEntity.ok(items);
     }
+
+    @PostMapping("/add-item-price")
+    public ResponseEntity<?> addItemPrice(@RequestBody ItemPrice itemPrice) {
+        try {
+            ItemPrice newItemPrice = itemService.addItemPrice(itemPrice);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newItemPrice);
+//        } catch (DuplicateFieldException ex) {
+//            ResponseMessage error_duplicate = new ResponseMessage(
+//                    "error-duplicate",
+//                    ex.getMessage(),
+//                    null
+//            );
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error_duplicate);
+        } catch (Exception ex) {
+            ResponseMessage error = new ResponseMessage(
+                    "error",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
 }

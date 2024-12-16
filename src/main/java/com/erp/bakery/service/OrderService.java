@@ -53,8 +53,6 @@ public class OrderService {
             BigDecimal quantity = BigDecimal.valueOf(item.getQuantity());
             BigDecimal total = unitPrice.multiply(quantity).setScale(2, RoundingMode.HALF_UP); // Scale set to 2 for currency precision
             totalPriceOfItem = totalPriceOfItem.add(total);// Add to the total price
-            System.out.println(total);
-            System.out.println(total.doubleValue());
             item.setTotalPrice(total.doubleValue());
         }
         order.setNumberOfItems(numberOfItems);

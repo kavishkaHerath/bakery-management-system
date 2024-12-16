@@ -6,6 +6,7 @@ import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.*;
 import com.erp.bakery.model.dto.ItemDTO;
 import com.erp.bakery.model.dto.ItemGetByIdDTO;
+import com.erp.bakery.repository.ItemPriceRepository;
 import com.erp.bakery.repository.ItemRepository;
 import com.erp.bakery.repository.OrderDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,13 @@ public class ItemService {
     private final ItemRepository itemRepository;
     @Autowired
     private final OrderDetailRepository orderDetailRepository;
+    @Autowired
+    private final ItemPriceRepository itemPriceRepository;
 
-    public ItemService(ItemRepository itemRepository, OrderDetailRepository orderDetailRepository) {
+    public ItemService(ItemRepository itemRepository, OrderDetailRepository orderDetailRepository, ItemPriceRepository itemPriceRepository) {
         this.itemRepository = itemRepository;
         this.orderDetailRepository = orderDetailRepository;
+        this.itemPriceRepository = itemPriceRepository;
     }
 
     public List<ItemDTO> findAllItemDetails() {
@@ -100,5 +104,16 @@ public class ItemService {
 
     public List<ItemActiveDTO> getActiveItemsBySupplier(Long supplierCode) {
         return itemRepository.findActiveItemsBySupplier(supplierCode);
+    }
+
+    //add item price
+    public ItemPrice addItemPrice(ItemPrice itemPrice) {
+        // Check for duplicate email and phone
+//        if (itemPriceRepository.exis(item.getItemName())) {
+//            throw new DuplicateFieldException("Item name " + item.getItemName() + " is already in use.");
+//        }
+        // Set to current date without time
+        itemPrice.setAddedDate(LocalDate.now());
+        return itemPriceRepository.save(itemPrice);
     }
 }
