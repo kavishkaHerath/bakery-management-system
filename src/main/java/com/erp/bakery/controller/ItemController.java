@@ -155,4 +155,31 @@ public class ItemController {
     public List<ItemPriceDTO> getAllItemsWithPrice() {
         return itemService.findAllItemsWithPrice();
     }
+
+    @PutMapping("/editItemPrice")
+    public ResponseEntity<ResponseMessage> updateItemPrice(@RequestBody ItemPrice updateRequest) {
+        try {
+            ItemPrice updatedPrice = itemService.updateItemPrice(updateRequest);
+            ResponseMessage response = new ResponseMessage(
+                    "success",
+                    "Item updated successfully",
+                    updatedPrice.getItem().getItemId().toString()
+            );
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (DuplicateFieldException ex) {
+            ResponseMessage responseMessage = new ResponseMessage(
+                    "error-duplicate",
+                    ex.getMessage(),
+                    updateRequest.getItem().getItemId().toString()
+            );
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(responseMessage);
+        } catch (Exception ex) {
+            // Handle error, return appropriate error response
+            ResponseMessage response = new ResponseMessage(
+                    "error",
+                    "Failed to update item: " + ex.getMessage(),
+                    null);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

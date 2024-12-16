@@ -116,8 +116,10 @@ public class ItemService {
                 itemPrice.getSellingPrice(),
                 itemPrice.isStatus()
         )) {
+            System.out.println(itemPrice.isStatus());
             throw new DuplicateFieldException("Duplicate entry: An item with the same item, purchase price, and selling price already exists.");
         }
+
         // Set to current date without time
         itemPrice.setAddedDate(LocalDate.now());
         return itemPriceRepository.save(itemPrice);
@@ -125,6 +127,29 @@ public class ItemService {
 
     public List<ItemPriceDTO> findAllItemsWithPrice() {
         return itemPriceRepository.getAllItemsWithPrice();
+    }
+
+    // Update item details
+    public ItemPrice updateItemPrice(ItemPrice updateRequest) {
+        var id = updateRequest.getId();
+
+        ItemPrice existingItem = itemPriceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Item not found with Item code: " + id));
+        // Check if item name is in use by another item
+        if (itemPriceRepository.existsByItemAndPurchasePriceAndSellingPriceAndStatus(
+                updateRequest.getItem(),
+                updateRequest.getPurchasePrice(),
+                updateRequest.getSellingPrice(),
+                updateRequest.isStatus()
+        )) {
+            throw new DuplicateFieldException("Duplicate entry: An item with the same item, purchase price, and selling price already exists.");
+        }
+
+        existingItem.setPurchasePrice(updateRequest.getPurchasePrice());
+        existingItem.setSellingPrice(updateRequest.getSellingPrice());
+        existingItem.setAddedDate(LocalDate.now());
+        existingItem.setStatus(updateRequest.isStatus());
+        return itemPriceRepository.save(existingItem);
     }
 
 }
