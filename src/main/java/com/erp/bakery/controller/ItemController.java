@@ -132,13 +132,13 @@ public class ItemController {
         try {
             ItemPrice newItemPrice = itemService.addItemPrice(itemPrice);
             return ResponseEntity.status(HttpStatus.CREATED).body(newItemPrice);
-//        } catch (DuplicateFieldException ex) {
-//            ResponseMessage error_duplicate = new ResponseMessage(
-//                    "error-duplicate",
-//                    ex.getMessage(),
-//                    null
-//            );
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error_duplicate);
+        } catch (DuplicateFieldException ex) {
+            ResponseMessage error_duplicate = new ResponseMessage(
+                    "error-duplicate",
+                    ex.getMessage(),
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error_duplicate);
         } catch (Exception ex) {
             ResponseMessage error = new ResponseMessage(
                     "error",

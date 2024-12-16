@@ -109,9 +109,13 @@ public class ItemService {
     //add item price
     public ItemPrice addItemPrice(ItemPrice itemPrice) {
         // Check for duplicate email and phone
-//        if (itemPriceRepository.exis(item.getItemName())) {
-//            throw new DuplicateFieldException("Item name " + item.getItemName() + " is already in use.");
-//        }
+        if (itemPriceRepository.existsByItemAndPurchasePriceAndSellingPrice(
+                itemPrice.getItem(),
+                itemPrice.getPurchasePrice(),
+                itemPrice.getSellingPrice())
+        ) {
+            throw new DuplicateFieldException("Duplicate entry: An item with the same item, purchase price, and selling price already exists.");
+        }
         // Set to current date without time
         itemPrice.setAddedDate(LocalDate.now());
         return itemPriceRepository.save(itemPrice);
