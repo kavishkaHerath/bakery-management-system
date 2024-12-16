@@ -147,8 +147,10 @@ public class ItemService {
 
         existingItem.setPurchasePrice(updateRequest.getPurchasePrice());
         existingItem.setSellingPrice(updateRequest.getSellingPrice());
-        existingItem.setAddedDate(LocalDate.now());
+        existingItem.setModifyDate(LocalDate.now());
         existingItem.setStatus(updateRequest.isStatus());
+        existingItem.setModifyEmployee(updateRequest.getAddEmployee());
+
         return itemPriceRepository.save(existingItem);
     }
 
