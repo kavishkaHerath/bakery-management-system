@@ -6,6 +6,8 @@ import com.erp.bakery.exception.NotFoundException;
 import com.erp.bakery.model.*;
 import com.erp.bakery.model.dto.ItemDTO;
 import com.erp.bakery.model.dto.ItemGetByIdDTO;
+import com.erp.bakery.model.dto.ItemPriceDTO;
+import com.erp.bakery.model.dto.OderDTO;
 import com.erp.bakery.response.ResponseMessage;
 import com.erp.bakery.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,5 +149,10 @@ public class ItemController {
             );
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
+    }
+
+    @GetMapping("/all-items-with-price")
+    public List<ItemPriceDTO> getAllItemsWithPrice() {
+        return itemService.findAllItemsWithPrice();
     }
 }
