@@ -132,12 +132,12 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/send-to-GRN/{orderCode}")
+    @GetMapping("/send-to-GRNMain/{orderCode}")
     public ResponseEntity<?> orderDetailsSendToGRN(@PathVariable String orderCode) {
         try {
             orderService.orderDetailsSentToGRN(orderCode);
             return ResponseEntity.status(HttpStatus.OK).body(
-                    "Order details with order code " + orderCode + " sent to GRN successfully");
+                    "Order details with order code " + orderCode + " sent to GRNMain successfully");
         } catch (NotFoundException ex) {
             ResponseMessage responseMessage = new ResponseMessage(
                     "error",

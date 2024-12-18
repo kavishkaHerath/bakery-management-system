@@ -172,7 +172,7 @@ public class OrderService {
         Order existingOrder = orderRepository.findById(orderCode)
                 .orElseThrow(() -> new RuntimeException("Items Order not found"));
         if (!existingOrder.getStatus().equals("A")) {
-            throw new AccessToModifyException("The order cannot be sent to GRN because its status is not 'APPROVED'!");
+            throw new AccessToModifyException("The order cannot be sent to GRNMain because its status is not 'APPROVED'!");
         }
         existingOrder.setStatus("S");
         existingOrder.setApprovedDate(LocalDate.now());

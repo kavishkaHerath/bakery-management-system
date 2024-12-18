@@ -31,7 +31,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 
     Optional<Order> findByOrderCode(String orderCode);
 
-    //Get all GRN details
+    //Get all GRNMain details
     @Query("SELECT new com.erp.bakery.model.dto.OderDTO(" +
             "o.orderCode, CONCAT(o.supplier.companeyName, ' - ', o.supplier.supplierName)," +
             "o.numberOfItems, o.totalPrice, o.expectedDate, o.status, " +
