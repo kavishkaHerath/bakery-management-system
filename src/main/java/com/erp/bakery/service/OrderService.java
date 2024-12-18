@@ -58,7 +58,6 @@ public class OrderService {
             BigDecimal total = unitPrice.multiply(quantity).setScale(2, RoundingMode.HALF_UP); // Scale set to 2 for currency precision
             totalPriceOfItem = totalPriceOfItem.add(total);// Add to the total price
             item.setTotalPrice(total.doubleValue());
-            var id = item.getItem().getItemId();
             ItemPrice itemPrice = itemPriceRepository.findByItem(item.getItem());
             if (itemPrice != null) {
                 if (!itemPrice.getPurchasePrice().equals(item.getUnitPrice())) {
