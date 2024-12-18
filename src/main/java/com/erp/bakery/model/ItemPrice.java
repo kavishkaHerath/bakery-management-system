@@ -15,5 +15,5 @@ public class ItemPrice {
     @JoinColumn(name = "itemId", referencedColumnName = "itemId", nullable = false)
     private Item item;
     @Column(nullable = false)
-    private double purchasePrice;
+    private Double purchasePrice;
 }

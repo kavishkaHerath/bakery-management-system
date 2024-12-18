@@ -9,4 +9,5 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ItemPriceRepository extends JpaRepository<ItemPrice, Long> {
+    ItemPrice findByItem(Item item);
 }

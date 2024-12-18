@@ -35,8 +35,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     )
     Optional<ItemGetByIdDTO> findItemDetailsById(@Param("itemId") Long itemId);
 
-    @Query("SELECT new com.erp.bakery.model.ItemActiveDTO(i.itemId, CONCAT(i.itemName, ' - ', i.displayName)) " +
-            "FROM Item i " +
+    @Query("SELECT new com.erp.bakery.model.ItemActiveDTO(i.itemId, CONCAT(i.itemName, ' - ', i.displayName), " +
+            "COALESCE(p.purchasePrice, 0)) " +
+            "FROM Item i LEFT JOIN ItemPrice p ON i.itemId = p.item.itemId " +
             "WHERE i.status = true AND i.supplier.supplierCode = :supplierCode "
     )
     List<ItemActiveDTO> findActiveItemsBySupplier(Long supplierCode);

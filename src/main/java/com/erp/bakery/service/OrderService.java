@@ -3,11 +3,13 @@ package com.erp.bakery.service;
 
 import com.erp.bakery.exception.AccessToModifyException;
 import com.erp.bakery.exception.NotFoundException;
+import com.erp.bakery.model.ItemPrice;
 import com.erp.bakery.model.OrderDetail;
 import com.erp.bakery.model.Order;
 import com.erp.bakery.model.dto.OderDTO;
 import com.erp.bakery.model.dto.OrderDTOGet;
 import com.erp.bakery.model.dto.OrderModify;
+import com.erp.bakery.repository.ItemPriceRepository;
 import com.erp.bakery.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,9 +26,11 @@ import java.util.Locale;
 public class OrderService {
     @Autowired
     private final OrderRepository orderRepository;
+    private final ItemPriceRepository itemPriceRepository;
 
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, ItemPriceRepository itemPriceRepository) {
         this.orderRepository = orderRepository;
+        this.itemPriceRepository = itemPriceRepository;
     }
 
     public Order saveItemOrder(Order order) {
@@ -54,11 +58,28 @@ public class OrderService {
             BigDecimal total = unitPrice.multiply(quantity).setScale(2, RoundingMode.HALF_UP); // Scale set to 2 for currency precision
             totalPriceOfItem = totalPriceOfItem.add(total);// Add to the total price
             item.setTotalPrice(total.doubleValue());
+            var id = item.getItem().getItemId();
+            ItemPrice itemPrice = itemPriceRepository.findByItem(item.getItem());
+            if (itemPrice != null) {
+                if (!itemPrice.getPurchasePrice().equals(item.getUnitPrice())) {
+                    itemPrice.setPurchasePrice(item.getUnitPrice());
+                    itemPriceRepository.save(itemPrice);
+                }
+
+            } else {
+                ItemPrice newItemPrice = new ItemPrice();
+                newItemPrice.setItem(item.getItem());
+                newItemPrice.setPurchasePrice(item.getUnitPrice());
+                itemPriceRepository.save(newItemPrice);
+            }
         }
         order.setNumberOfItems(numberOfItems);
         order.setTotalPrice(totalPriceOfItem.doubleValue());
         // Save order and associated orderDetails
         orderRepository.save(order);
+
+        //Update Price
+
 
         return order;
     }

@@ -8,9 +8,11 @@ import lombok.Setter;
 public class ItemActiveDTO {
     private Long itemId;
     private String name;
+    private double purchasePrice;
 
-    public ItemActiveDTO(Long itemId, String name) {
+    public ItemActiveDTO(Long itemId, String name, double purchasePrice) {
         this.itemId = itemId;
         this.name = name;
+        this.purchasePrice = purchasePrice;
     }
 }

@@ -107,6 +107,4 @@ public class ItemService {
         return itemRepository.findActiveItemsBySupplier(supplierCode);
     }
 
-
-
 }
